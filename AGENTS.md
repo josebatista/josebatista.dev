@@ -21,13 +21,13 @@ All content lives in markdown files under `src/`. Vue components handle only lay
 | Markdown file | Contents | Loaded by |
 |---|---|---|
 | `src/index.md` | Home page entrypoint (`layout: false`, renders `<DesktopHome />`) | — |
-| `src/about.md` | Bio text | `about.data.ts` → `AboutWindow.vue` |
-| `src/projects.md` | Frontmatter `projects[]` (name, description, language, stars) | `projects.data.ts` → `ProjectsWindow.vue` |
-| `src/contact.md` | Frontmatter `links[]` (label, url, text) | `contact.data.ts` → `ContactWindow.vue` |
-| `src/posts/*.md` | Blog articles with frontmatter (title, date, tags[], description) | `posts.data.ts` → `BlogWindow.vue` |
+| `src/about.md` | Bio text | `loaders/about.data.ts` → `AboutWindow.vue` |
+| `src/projects.md` | Frontmatter `projects[]` (name, description, language, stars) | `loaders/projects.data.ts` → `ProjectsWindow.vue` |
+| `src/contact.md` | Frontmatter `links[]` (label, url, text) | `loaders/contact.data.ts` → `ContactWindow.vue` |
+| `src/posts/*.md` | Blog articles with frontmatter (title, date, tags[], description) | `loaders/posts.data.ts` → `BlogWindow.vue` |
 
 ### Data loaders
-Located in `.vitepress/theme/*.data.ts`. Each uses `createContentLoader` with `render: true`. Glob patterns are relative to `srcDir` (`src/`). Imports use `.js` extension in Vue files (VitePress convention).
+Located in `.vitepress/loaders/*.data.ts`. Each uses `createContentLoader` with `render: true`. Glob patterns are relative to `srcDir` (`src/`). Imports use `.js` extension in Vue files (VitePress convention).
 
 ### Component tree
 ```

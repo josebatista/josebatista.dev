@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Terminal from '../components/Terminal.vue'
-import { data as pages } from '../contact.data.js'
+import { data as pages } from '../../loaders/contact.data.js'
 
 const links = computed(() => {
   if (pages && pages.length > 0) {

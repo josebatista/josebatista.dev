@@ -96,7 +96,7 @@
 import { ref, computed } from 'vue'
 import GridItem from '../components/GridItem.vue'
 import ListItem from '../components/ListItem.vue'
-import { data as posts } from '../posts.data.js'
+import { data as posts } from '../../loaders/posts.data.js'
 
 const isGridView = ref(true)
 const selectedPost = ref<(typeof posts)[number] | null>(null)

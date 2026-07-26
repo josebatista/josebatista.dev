@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { data as pages } from '../projects.data.js'
+import { data as pages } from '../../loaders/projects.data.js'
 
 const projects = computed(() => {
   if (pages && pages.length > 0) {

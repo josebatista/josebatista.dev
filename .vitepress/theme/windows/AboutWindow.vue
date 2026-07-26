@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Terminal from '../components/Terminal.vue'
-import { data as pages } from '../about.data.js'
+import { data as pages } from '../../loaders/about.data.js'
 
 const content = computed(() => {
   if (pages && pages.length > 0) {
