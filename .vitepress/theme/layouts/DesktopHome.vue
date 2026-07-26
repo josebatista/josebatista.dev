@@ -37,9 +37,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import TopBar from './components/TopBar.vue'
-import Window from './Window.vue'
-import DesktopIcon from './DesktopIcon.vue'
+import TopBar from '../components/TopBar.vue'
+import Window from '../components/Window.vue'
+import DesktopIcon from '../components/DesktopIcon.vue'
 
 interface Icon {
   id: string

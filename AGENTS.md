@@ -32,14 +32,14 @@ Located in `.vitepress/loaders/*.data.ts`. Each uses `createContentLoader` with 
 ### Component tree
 ```
 index.md (layout: false)
-  DesktopHome.vue         — wallpaper, top bar, desktop icons, window manager
-    TopBar.vue            — fixed top bar (brand + clock, extracted component)
-    DesktopIcon.vue       — single desktop shortcut icon
-    Window.vue            — draggable window frame (title bar, controls, content slot)
-      windows/*.vue       — AboutWindow, BlogWindow, ProjectsWindow, ContactWindow
-        Terminal.vue      — reusable terminal frame (prompt, body slot, cursor, statusbar)
-        GridItem.vue      — reusable grid card (thumbnail + body slots, default 📄)
-        ListItem.vue      — reusable sidebar row (icon + title + desc + meta slot)
+  layouts/DesktopHome.vue       — wallpaper, top bar, desktop icons, window manager
+    components/TopBar.vue       — fixed top bar (brand + clock)
+    components/DesktopIcon.vue  — single desktop shortcut icon
+    components/Window.vue       — draggable window frame (title bar, controls, content slot)
+      content/*.vue             — AboutWindow, BlogWindow, ProjectsWindow, ContactWindow
+        components/Terminal.vue — reusable terminal frame (prompt, body slot, cursor, statusbar)
+        components/GridItem.vue — reusable grid card (thumbnail + body slots, default 📄)
+        components/ListItem.vue — reusable sidebar row (icon + title + desc + meta slot)
 ```
 
 ### Window system
@@ -51,13 +51,13 @@ index.md (layout: false)
 - Maximized windows sit below the fixed top bar (36px offset)
 
 ### Key conventions
-- All imports of `.data.ts` files in Vue use `.js` extension (e.g., `from '../posts.data.js'`)
+- All imports of `.data.ts` files in Vue use `.js` extension (e.g., `from '../../loaders/posts.data.js'`)
 - `createContentLoader` globs are relative to `srcDir: 'src'`
 - CSS class `.window-statusbar` is shared across all window content components
 - `Terminal.vue` — wraps content in a terminal frame (prompt line + body slot + blinking cursor + optional statusbar slot)
 - `GridItem.vue` — reusable grid card with named slots `thumbnail` and default `body` (defaults to 📄 icon + title + date)
 - `ListItem.vue` — reusable sidebar row with props `title`, `description`, `active` and a `#meta` slot for tags/date
-- Desktop icons defined in `DesktopHome.vue` — 4 icons: about_me.sh (terminal), Blog (folder), Projects.lnk (folder_open), Contact.sh (mail) — 4 icons: about_me.sh (terminal), Blog (folder), Projects.lnk (folder_open), Contact.sh (mail)
+- Desktop icons defined in `DesktopHome.vue` — 4 icons: about_me.sh (terminal), Blog (folder), Projects.lnk (folder_open), Contact.sh (mail)
 
 ### Design tokens (CSS variables)
 Colors, spacing, typography in `:root` inside `style.css`. Dark theme only (`appearance: false` in config). Primary green (`#00ff41`), secondary blue (`#3584e4`).

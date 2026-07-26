@@ -1,5 +1,5 @@
 import DefaultTheme from 'vitepress/theme'
-import DesktopHome from './DesktopHome.vue'
+import DesktopHome from './layouts/DesktopHome.vue'
 import './style.css'
 
 export default {
