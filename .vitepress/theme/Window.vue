@@ -2,6 +2,7 @@
   <div
     v-show="!minimized"
     class="window"
+    :class="{ 'window-dragging': isDragging, 'window-opening': opening, 'window-closing': closing }"
     :style="windowStyle"
     @mousedown.prevent="$emit('focus')"
   >
@@ -10,14 +11,14 @@
       @mousedown.prevent="startDrag"
     >
       <div class="window-controls">
-        <button class="dot dot-red" @click.stop="$emit('close')" title="Close"><span class="dot-icon">✕</span></button>
+        <button class="dot dot-red" @click.stop="handleClose" title="Close"><span class="dot-icon">✕</span></button>
         <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? 'Restore' : 'Maximize'"><span class="dot-icon">{{ maximized ? '⧉' : '□' }}</span></button>
       </div>
       <span class="window-title">{{ title }}</span>
       <div class="window-spacer"></div>
     </div>
     <div class="window-content" ref="contentRef">
-      <TerminalWindow v-if="type === 'terminal'" />
+      <AboutWindow v-if="type === 'terminal'" />
       <BlogWindow v-else-if="type === 'blog'" />
       <ProjectsWindow v-else-if="type === 'projects'" />
       <ContactWindow v-else-if="type === 'contact'" />
@@ -26,8 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import TerminalWindow from './content/TerminalWindow.vue'
+import { ref, computed, onMounted } from 'vue'
+import AboutWindow from './content/AboutWindow.vue'
 import BlogWindow from './content/BlogWindow.vue'
 import ProjectsWindow from './content/ProjectsWindow.vue'
 import ContactWindow from './content/ContactWindow.vue'
@@ -46,11 +47,23 @@ const props = defineProps<{
   data?: any
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   close: []
   focus: []
   'toggle-maximize': []
 }>()
+
+const opening = ref(true)
+const closing = ref(false)
+
+onMounted(() => {
+  requestAnimationFrame(() => { opening.value = false })
+})
+
+function handleClose() {
+  closing.value = true
+  setTimeout(() => emit('close'), 200)
+}
 
 const x = ref(props.initialX)
 const y = ref(props.initialY)

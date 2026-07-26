@@ -44,7 +44,7 @@
 
     <div v-else class="blog-split">
       <div class="blog-sidebar">
-        <div class="sidebar-section">
+        <div class="sidebar-directory">
           <div class="sidebar-label">DIRECTORY</div>
           <div
             v-for="post in filteredPosts"
@@ -65,23 +65,25 @@
           </div>
         </div>
 
-        <div class="sidebar-section">
-          <div class="sidebar-label">TAGS</div>
-          <div class="tags-list">
-            <span
-              v-for="tag in allTags"
-              :key="tag"
-              class="tag-pill"
-              :class="{ active: activeTag === tag }"
-              @click="activeTag = activeTag === tag ? '' : tag"
-            >#{{ tag }}</span>
+        <div class="sidebar-footer">
+          <div class="sidebar-section">
+            <div class="sidebar-label">TAGS</div>
+            <div class="tags-list">
+              <span
+                v-for="tag in allTags"
+                :key="tag"
+                class="tag-pill"
+                :class="{ active: activeTag === tag }"
+                @click="activeTag = activeTag === tag ? '' : tag"
+              >#{{ tag }}</span>
+            </div>
           </div>
-        </div>
 
-        <div class="sidebar-storage">
-          <div class="storage-label">Disk Usage</div>
-          <div class="storage-bar"><div class="storage-fill" /></div>
-          <span class="storage-text">82% — 2.4 MB / 3.0 MB</span>
+          <div class="sidebar-storage">
+            <div class="storage-label">Disk Usage</div>
+            <div class="storage-bar"><div class="storage-fill" /></div>
+            <span class="storage-text">82% — 2.4 MB / 3.0 MB</span>
+          </div>
         </div>
       </div>
 
@@ -94,7 +96,7 @@
       </div>
     </div>
 
-    <div class="blog-statusbar">
+    <div class="window-statusbar">
       <span>{{ filteredPosts.length }} items | 2.4 MB | 82% Disk Space Used</span>
       <span>Permission: rwxr-xr-x | User: josebatista</span>
     </div>
