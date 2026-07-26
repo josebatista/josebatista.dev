@@ -26,43 +26,32 @@
     </div>
 
     <div v-if="isGridView" class="blog-grid">
-      <div
+      <GridItem
         v-for="post in filteredPosts"
         :key="post.url"
-        class="post-card"
-        @click="openPost(post)"
-      >
-        <div class="post-card-thumb">
-          <span class="file-icon">📄</span>
-        </div>
-        <div class="post-card-info">
-          <span class="post-card-title">{{ post.title }}</span>
-          <span class="post-card-date">{{ post.date }}</span>
-        </div>
-      </div>
+        :title="post.title"
+        :date="post.date"
+        @select="openPost(post)"
+      />
     </div>
 
     <div v-else class="blog-split">
       <div class="blog-sidebar">
         <div class="sidebar-directory">
           <div class="sidebar-label">DIRECTORY</div>
-          <div
+          <ListItem
             v-for="post in filteredPosts"
             :key="post.url"
-            class="sidebar-item"
-            :class="{ active: selectedPost?.url === post.url }"
-            @click="selectedPost = post"
+            :title="post.title"
+            :description="post.description"
+            :active="selectedPost?.url === post.url"
+            @select="selectedPost = post"
           >
-            <span class="sidebar-item-icon">📄</span>
-            <div class="sidebar-item-info">
-              <span class="sidebar-item-title">{{ post.title }}</span>
-              <span class="sidebar-item-desc">{{ post.description }}</span>
-              <span class="sidebar-item-meta">
-                <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
-                <span class="date">{{ post.date }}</span>
-              </span>
-            </div>
-          </div>
+            <template #meta>
+              <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
+              <span class="date">{{ post.date }}</span>
+            </template>
+          </ListItem>
         </div>
 
         <div class="sidebar-footer">
@@ -105,6 +94,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import GridItem from '../components/GridItem.vue'
+import ListItem from '../components/ListItem.vue'
 import { data as posts } from '../posts.data.js'
 
 const isGridView = ref(true)

@@ -28,10 +28,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import AboutWindow from './content/AboutWindow.vue'
-import BlogWindow from './content/BlogWindow.vue'
-import ProjectsWindow from './content/ProjectsWindow.vue'
-import ContactWindow from './content/ContactWindow.vue'
+import AboutWindow from './windows/AboutWindow.vue'
+import BlogWindow from './windows/BlogWindow.vue'
+import ProjectsWindow from './windows/ProjectsWindow.vue'
+import ContactWindow from './windows/ContactWindow.vue'
 
 const props = defineProps<{
   title: string

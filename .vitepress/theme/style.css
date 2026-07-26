@@ -439,7 +439,7 @@ html, body {
   padding: 4px 0;
 }
 
-.post-card {
+.grid-item {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 8px;
@@ -448,13 +448,13 @@ html, body {
   transition: all 0.15s;
 }
 
-.post-card:hover,
-.post-card.active {
+.grid-item:hover,
+.grid-item.active {
   border-color: rgba(0, 255, 65, 0.3);
   background: rgba(0, 255, 65, 0.04);
 }
 
-.post-card-thumb {
+.grid-item-thumb {
   width: 100%;
   height: 100px;
   display: flex;
@@ -465,21 +465,21 @@ html, body {
   margin-bottom: 8px;
 }
 
-.file-icon { font-size: 28px; }
+.grid-item-icon { font-size: 28px; }
 
-.post-card-info {
+.grid-item-body {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.post-card-title {
+.grid-item-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--on-surface);
 }
 
-.post-card-date {
+.grid-item-date {
   font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
   color: var(--on-surface-variant);
@@ -529,7 +529,7 @@ html, body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.sidebar-item {
+.list-item {
   display: flex;
   gap: 8px;
   padding: 8px;
@@ -538,21 +538,21 @@ html, body {
   transition: background 0.15s;
 }
 
-.sidebar-item:hover,
-.sidebar-item.active {
+.list-item:hover,
+.list-item.active {
   background: rgba(0, 255, 65, 0.06);
 }
 
-.sidebar-item-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.list-item-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
 
-.sidebar-item-info {
+.list-item-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
 
-.sidebar-item-title {
+.list-item-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--on-surface);
@@ -561,7 +561,7 @@ html, body {
   text-overflow: ellipsis;
 }
 
-.sidebar-item-desc {
+.list-item-desc {
   font-size: 11px;
   color: var(--on-surface-variant);
   display: -webkit-box;
@@ -570,7 +570,7 @@ html, body {
   overflow: hidden;
 }
 
-.sidebar-item-meta {
+.list-item-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -587,7 +587,7 @@ html, body {
   border-radius: 3px;
 }
 
-.sidebar-item-meta .date {
+.list-item-meta .date {
   font-size: 10px;
   color: var(--outline);
   font-family: 'JetBrains Mono', monospace;

@@ -2,10 +2,7 @@
   <div class="desktop" @contextmenu.prevent>
     <div class="desktop-wallpaper"></div>
 
-    <div class="top-bar">
-      <span class="brand">josebatista.dev</span>
-      <span class="clock">{{ time }}</span>
-    </div>
+    <TopBar />
 
     <div class="desktop-icons">
       <DesktopIcon
@@ -39,7 +36,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
+import TopBar from './components/TopBar.vue'
 import Window from './Window.vue'
 import DesktopIcon from './DesktopIcon.vue'
 
@@ -75,28 +73,6 @@ const icons: Icon[] = [
 const windows = ref<AppWindow[]>([])
 const activeWindow = ref<string | null>(null)
 let nextZ = 1
-
-const time = ref('')
-let timer: number
-
-function updateClock() {
-  const now = new Date()
-  time.value = now.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
-onMounted(() => {
-  updateClock()
-  timer = window.setInterval(updateClock, 10000)
-})
-
-onUnmounted(() => {
-  clearInterval(timer)
-})
 
 function openWindow(icon: Icon) {
   const existing = windows.value.find(w => w.id === icon.id)
