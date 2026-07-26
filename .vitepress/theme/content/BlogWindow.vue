@@ -48,8 +48,10 @@
             @select="selectedPost = post"
           >
             <template #meta>
-              <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
-              <span class="date">{{ post.date }}</span>
+              <div class="list-item-date">{{ post.date }}</div>
+              <div class="list-item-tags">
+                <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
+              </div>
             </template>
           </ListItem>
         </div>

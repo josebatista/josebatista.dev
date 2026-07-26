@@ -4,7 +4,7 @@
     class="window"
     :class="{ 'window-dragging': isDragging, 'window-opening': opening, 'window-closing': closing }"
     :style="windowStyle"
-    @mousedown.prevent="$emit('focus')"
+    @mousedown="$emit('focus')"
   >
     <div
       class="window-titlebar"

@@ -57,5 +57,3 @@ sudo make install
 ## Conclusion
 
 Building a custom kernel teaches you more about how Linux works under the hood than almost any other activity. Start with small configuration changes and work your way up.
-
-[EOF]

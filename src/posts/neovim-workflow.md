@@ -49,5 +49,3 @@ require("mason-lspconfig").setup({
 ## Terminal Integration
 
 I keep a terminal buffer in a toggleable split using `toggleterm.nvim`. This lets me run tests and builds without leaving Neovim.
-
-[EOF]

@@ -9,7 +9,7 @@ export default createContentLoader('posts/*.md', {
     }).map(page => ({
       url: page.url,
       title: page.frontmatter.title,
-      date: page.frontmatter.date,
+      date: new Date(page.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       tags: page.frontmatter.tags || [],
       description: page.frontmatter.description || '',
       html: page.html,
