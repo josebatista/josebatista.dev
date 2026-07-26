@@ -1,0 +1,20 @@
+{
+  "name": "josebatista.dev_new",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
+  "dependencies": {
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.40"
+  }
+}
