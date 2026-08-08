@@ -9,6 +9,7 @@
     :aria-labelledby="titleId"
     tabindex="-1"
     @mousedown="$emit('focus')"
+    @keydown.esc="handleClose"
   >
     <div
       class="window-titlebar"

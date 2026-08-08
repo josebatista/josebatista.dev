@@ -3,7 +3,13 @@
     <div class="contact-grid">
       <div class="contact-item" v-for="link in links" :key="link.label">
         <span class="contact-label">{{ link.label }}</span>
-        <a :href="link.url" class="contact-value" target="_blank">{{ link.text }}</a>
+        <a
+          :href="link.url"
+          class="contact-value"
+          target="_blank"
+          rel="noopener noreferrer"
+          :aria-label="`${link.text} (opens in new tab)`"
+        >{{ link.text }}</a>
       </div>
     </div>
   </Terminal>

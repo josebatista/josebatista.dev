@@ -1,5 +1,5 @@
 <template>
-  <div class="desktop" @contextmenu.prevent>
+  <main class="desktop" @contextmenu.prevent>
     <div class="desktop-wallpaper"></div>
 
     <TopBar />
@@ -32,7 +32,7 @@
       @toggle-maximize="toggleMaximize(win.id)"
       :class="{ 'window-focused': win.id === activeWindow }"
     />
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">

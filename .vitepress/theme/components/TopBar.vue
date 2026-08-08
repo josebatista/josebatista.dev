@@ -1,8 +1,8 @@
 <template>
-  <div class="top-bar">
+  <header class="top-bar">
     <span class="brand">josebatista.dev</span>
     <span class="clock">{{ time }}</span>
-  </div>
+  </header>
 </template>
 
 <script setup lang="ts">

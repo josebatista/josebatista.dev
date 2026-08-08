@@ -49,6 +49,17 @@ index.md (layout: false)
 - Opening animation: class `window-opening` (scale 0.95, opacity 0) removed on first animation frame
 - Closing animation: class `window-closing` added → 200ms timeout → emit `close`
 - Maximized windows sit below the fixed top bar (36px offset)
+- Double-click titlebar toggles maximize; `Escape` closes the focused window; bottom-right corner grip resizes (min 320×240)
+
+### Accessibility conventions
+- All interactive elements are real `<button>`/`<a>`/`<input>` — never divs with `@click`/`@dblclick`
+- Widgets converted to buttons use the zero-specificity `:where(.ui-button)` reset class so component styles still win
+- Desktop icons open on single click (no double-click needed); `Enter`/`Space` work natively
+- Focus is managed: new windows focus themselves on mount; `DesktopHome` returns focus to the opener icon on close; blog view swaps focus the grid/article panel via `tabindex="-1"` + `nextTick`
+- Windows are `role="dialog"` with `aria-labelledby` (Vue `useId()`) on the title
+- `:focus-visible` outline = 2px solid `var(--primary)` (`.window:focus` exempted)
+- Landmarks: `.desktop` is `<main>`, `.top-bar` is `<header>`; `target="_blank"` links get `rel="noopener noreferrer"` + "opens in new tab" aria-label
+- `@media (prefers-reduced-motion: reduce)` collapses all transitions/animations and pins the cursor
 
 ### Blog deep linking
 - Every blog post uses a custom `PostLayout` (`.vitepress/theme/layouts/PostLayout.vue`) that renders `DesktopHome` and derives its slug from `useData().page.relativePath`

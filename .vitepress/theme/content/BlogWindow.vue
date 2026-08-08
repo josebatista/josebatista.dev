@@ -21,11 +21,11 @@
         </div>
       </template>
       <div class="toolbar-search">
-        <input type="text" placeholder="Search posts..." v-model="searchQuery" />
+        <input type="text" placeholder="Search posts..." aria-label="Search posts" v-model="searchQuery" />
       </div>
     </div>
 
-    <div v-if="isGridView" class="blog-grid">
+    <div v-if="isGridView" ref="gridRef" tabindex="-1" class="blog-grid">
       <GridItem
         v-for="post in filteredPosts"
         :key="post.url"
@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <div class="blog-article" v-if="selectedPost">
+      <div ref="articleRef" tabindex="-1" class="blog-article" v-if="selectedPost">
         <article v-html="selectedPost.html" />
         <div class="eof-marker">
           <span>[EOF]</span>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import GridItem from '../components/GridItem.vue'
 import ListItem from '../components/ListItem.vue'
 import { data as posts } from '../../loaders/posts.data.js'
@@ -108,6 +108,8 @@ const isGridView = ref(true)
 const selectedPost = ref<(typeof posts)[number] | null>(null)
 const searchQuery = ref('')
 const activeTag = ref('')
+const gridRef = ref<HTMLElement | null>(null)
+const articleRef = ref<HTMLElement | null>(null)
 
 const filteredPosts = computed(() => {
   return posts.filter(post => {
@@ -123,15 +125,19 @@ const allTags = computed(() => {
   return Array.from(tags)
 })
 
-function openPost(post: (typeof posts)[number]) {
+async function openPost(post: (typeof posts)[number]) {
   selectedPost.value = post
   isGridView.value = false
   syncUrl(post.url)
+  await nextTick()
+  articleRef.value?.focus({ preventScroll: true })
 }
 
-function backToGrid() {
+async function backToGrid() {
   isGridView.value = true
   syncUrl('/')
+  await nextTick()
+  gridRef.value?.focus({ preventScroll: true })
 }
 
 function syncUrl(url: string) {
