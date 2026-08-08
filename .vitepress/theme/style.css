@@ -178,8 +178,35 @@ html, body {
   opacity: 0;
 }
 
-.window-dragging {
+.window-dragging,
+.window-resizing {
   transition: none !important;
+}
+
+.window-resizer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  z-index: 1;
+}
+
+.window-resizer::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom-right-radius: 1px;
+}
+
+.window-resizer:hover::after {
+  border-color: var(--primary);
 }
 
 .window-closing {

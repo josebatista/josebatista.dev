@@ -2,7 +2,7 @@
   <div
     v-show="!minimized"
     class="window"
-    :class="{ 'window-dragging': isDragging, 'window-opening': opening, 'window-closing': closing }"
+    :class="{ 'window-dragging': isDragging, 'window-resizing': isResizing, 'window-opening': opening, 'window-closing': closing }"
     :style="windowStyle"
     @mousedown="$emit('focus')"
   >
@@ -23,6 +23,12 @@
       <ProjectsWindow v-else-if="type === 'projects'" />
       <ContactWindow v-else-if="type === 'contact'" />
     </div>
+    <div
+      v-if="!maximized"
+      class="window-resizer"
+      @mousedown.stop.prevent="startResize"
+      title="Resize"
+    ></div>
   </div>
 </template>
 
@@ -88,6 +94,35 @@ function startDrag(e: MouseEvent) {
 
   function onUp() {
     isDragging.value = false
+    document.removeEventListener('mousemove', onMove)
+    document.removeEventListener('mouseup', onUp)
+  }
+
+  document.addEventListener('mousemove', onMove)
+  document.addEventListener('mouseup', onUp)
+}
+
+const isResizing = ref(false)
+const MIN_WIDTH = 320
+const MIN_HEIGHT = 240
+
+function startResize(e: MouseEvent) {
+  if (props.maximized) return
+  emit('focus')
+  isResizing.value = true
+  const startX = e.clientX
+  const startY = e.clientY
+  const startWidth = width.value
+  const startHeight = height.value
+
+  function onMove(ev: MouseEvent) {
+    if (!isResizing.value) return
+    width.value = Math.max(MIN_WIDTH, startWidth + (ev.clientX - startX))
+    height.value = Math.max(MIN_HEIGHT, startHeight + (ev.clientY - startY))
+  }
+
+  function onUp() {
+    isResizing.value = false
     document.removeEventListener('mousemove', onMove)
     document.removeEventListener('mouseup', onUp)
   }
