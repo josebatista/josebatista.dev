@@ -88,8 +88,10 @@ function startDrag(e: MouseEvent) {
 
   function onMove(ev: MouseEvent) {
     if (!isDragging.value) return
-    x.value = ev.clientX - dragOffset.x
-    y.value = ev.clientY - dragOffset.y
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+    x.value = Math.min(Math.max(ev.clientX - dragOffset.x, 0), viewportWidth - TITLEBAR_VISIBLE)
+    y.value = Math.min(Math.max(ev.clientY - dragOffset.y, TOP_BAR_HEIGHT), viewportHeight - TITLEBAR_VISIBLE)
   }
 
   function onUp() {
@@ -132,6 +134,7 @@ function startResize(e: MouseEvent) {
 }
 
 const TOP_BAR_HEIGHT = 36
+const TITLEBAR_VISIBLE = 32
 
 const windowStyle = computed(() => ({
   left: props.maximized ? '0px' : x.value + 'px',
