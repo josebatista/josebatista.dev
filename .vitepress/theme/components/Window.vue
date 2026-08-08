@@ -9,8 +9,9 @@
     <div
       class="window-titlebar"
       @mousedown.prevent="startDrag"
+      @dblclick.prevent="onTitlebarDblclick"
     >
-      <div class="window-controls">
+      <div class="window-controls" @dblclick.stop>
         <button class="dot dot-red" @click.stop="handleClose" title="Close"><span class="dot-icon">✕</span></button>
         <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? 'Restore' : 'Maximize'"><span class="dot-icon">{{ maximized ? '⧉' : '□' }}</span></button>
       </div>
@@ -79,9 +80,20 @@ const contentRef = ref<HTMLElement | null>(null)
 
 const isDragging = ref(false)
 const dragOffset = { x: 0, y: 0 }
+let lastTitlebarClick = 0
+
+function onTitlebarDblclick() {
+  emit('toggle-maximize')
+}
 
 function startDrag(e: MouseEvent) {
   if (props.maximized) return
+  const now = Date.now()
+  if (now - lastTitlebarClick < 400) {
+    lastTitlebarClick = now
+    return
+  }
+  lastTitlebarClick = now
   isDragging.value = true
   dragOffset.x = e.clientX - x.value
   dragOffset.y = e.clientY - y.value
