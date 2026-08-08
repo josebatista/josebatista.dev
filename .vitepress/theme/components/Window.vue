@@ -1,9 +1,13 @@
 <template>
-  <div
+<div
+    ref="windowRef"
     v-show="!minimized"
     class="window"
     :class="{ 'window-dragging': isDragging, 'window-resizing': isResizing, 'window-opening': opening, 'window-closing': closing }"
     :style="windowStyle"
+    role="dialog"
+    :aria-labelledby="titleId"
+    tabindex="-1"
     @mousedown="$emit('focus')"
   >
     <div
@@ -12,10 +16,10 @@
       @dblclick.prevent="onTitlebarDblclick"
     >
       <div class="window-controls" @dblclick.stop>
-        <button class="dot dot-red" @click.stop="handleClose" title="Close"><span class="dot-icon">✕</span></button>
-        <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? 'Restore' : 'Maximize'"><span class="dot-icon">{{ maximized ? '⧉' : '□' }}</span></button>
+        <button class="dot dot-red" @click.stop="handleClose" title="Close" aria-label="Close window"><span class="dot-icon" aria-hidden="true">✕</span></button>
+        <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? 'Restore' : 'Maximize'" :aria-label="maximized ? 'Restore window' : 'Maximize window'"><span class="dot-icon" aria-hidden="true">{{ maximized ? '⧉' : '□' }}</span></button>
       </div>
-      <span class="window-title">{{ title }}</span>
+      <span class="window-title" :id="titleId">{{ title }}</span>
       <div class="window-spacer"></div>
     </div>
     <div class="window-content" ref="contentRef">
@@ -34,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, useId } from 'vue'
 import AboutWindow from '../content/AboutWindow.vue'
 import BlogWindow from '../content/BlogWindow.vue'
 import ProjectsWindow from '../content/ProjectsWindow.vue'
@@ -62,9 +66,12 @@ const emit = defineEmits<{
 
 const opening = ref(true)
 const closing = ref(false)
+const titleId = useId()
+const windowRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   requestAnimationFrame(() => { opening.value = false })
+  windowRef.value?.focus({ preventScroll: true })
 })
 
 function handleClose() {

@@ -15,7 +15,7 @@
           ← Back
         </button>
         <div class="toolbar-breadcrumb">
-          <span class="crumb clickable" @click="backToGrid">Blog</span>
+          <button type="button" class="ui-button crumb clickable" @click="backToGrid">Blog</button>
           <span class="crumb-sep">/</span>
           <span class="crumb active">{{ selectedPost?.title }}</span>
         </div>
@@ -60,13 +60,15 @@
           <div class="sidebar-section">
             <div class="sidebar-label">TAGS</div>
             <div class="tags-list">
-              <span
+              <button
                 v-for="tag in allTags"
                 :key="tag"
-                class="tag-pill"
+                type="button"
+                class="ui-button tag-pill"
                 :class="{ active: activeTag === tag }"
+                :aria-pressed="activeTag === tag"
                 @click="activeTag = activeTag === tag ? '' : tag"
-              >#{{ tag }}</span>
+              >#{{ tag }}</button>
             </div>
           </div>
 

@@ -1,8 +1,8 @@
 <template>
-  <div class="grid-item" @click="$emit('select')">
+  <button type="button" class="ui-button grid-item" @click="$emit('select')">
     <div class="grid-item-thumb">
       <slot name="thumbnail">
-        <span class="grid-item-icon">{{ icon }}</span>
+        <span class="grid-item-icon" aria-hidden="true">{{ icon }}</span>
       </slot>
     </div>
     <div class="grid-item-body">
@@ -11,7 +11,7 @@
         <span class="grid-item-date">{{ date }}</span>
       </slot>
     </div>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">

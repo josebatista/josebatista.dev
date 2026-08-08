@@ -9,7 +9,7 @@
         v-for="icon in icons"
         :key="icon.id"
         :icon="icon"
-        @dblclick="openWindow(icon)"
+        @open="openWindow(icon)"
       />
     </div>
 
@@ -65,6 +65,7 @@ interface AppWindow {
   maximized: boolean
   zIndex: number
   data?: any
+  trigger?: HTMLElement | null
 }
 
 const icons: Icon[] = [
@@ -109,6 +110,7 @@ function openWindow(icon: Icon, data?: any) {
     maximized: false,
     zIndex: nextZ++,
     data,
+    trigger: document.activeElement instanceof HTMLElement ? document.activeElement : null,
   })
 
   activeWindow.value = icon.id
@@ -122,9 +124,13 @@ onMounted(() => {
 })
 
 function closeWindow(id: string) {
+  const win = windows.value.find(w => w.id === id)
   windows.value = windows.value.filter(w => w.id !== id)
   if (activeWindow.value === id) {
     activeWindow.value = windows.value.length > 0 ? windows.value[windows.value.length - 1].id : null
+  }
+  if (win?.trigger && document.contains(win.trigger)) {
+    win.trigger.focus({ preventScroll: true })
   }
 }
 

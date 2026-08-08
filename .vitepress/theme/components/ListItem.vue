@@ -1,6 +1,6 @@
 <template>
-  <div class="list-item" :class="{ active }" @click="$emit('select')">
-    <span class="list-item-icon">{{ icon }}</span>
+  <button type="button" class="ui-button list-item" :class="{ active }" @click="$emit('select')">
+    <span class="list-item-icon" aria-hidden="true">{{ icon }}</span>
     <div class="list-item-info">
       <span class="list-item-title">{{ title }}</span>
       <span v-if="description" class="list-item-desc">{{ description }}</span>
@@ -8,7 +8,7 @@
         <slot name="meta" />
       </div>
     </div>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">

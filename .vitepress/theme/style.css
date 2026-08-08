@@ -44,6 +44,46 @@ html, body {
   padding-top: 0 !important;
 }
 
+/* ─── Accessibility ─── */
+/* Zero-specificity reset so widget classes (background, padding, font-size, etc.) always win */
+:where(.ui-button) {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.desktop :focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.window:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .cursor,
+  .cursor-blink {
+    color: var(--primary);
+    opacity: 1;
+  }
+}
+
 .VPNav,
 .VPLocalNav,
 .VPSidebar,
@@ -664,8 +704,8 @@ html, body {
 
 .tag-pill:hover,
 .tag-pill.active {
-  background: var(--secondary);
-  color: #fff;
+  background: var(--primary);
+  color: var(--on-primary);
 }
 
 .sidebar-storage {
