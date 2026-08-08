@@ -19,7 +19,7 @@
     </div>
     <div class="window-content" ref="contentRef">
       <AboutWindow v-if="type === 'terminal'" />
-      <BlogWindow v-else-if="type === 'blog'" />
+      <BlogWindow v-else-if="type === 'blog'" :initial-article="data?.initialArticle" />
       <ProjectsWindow v-else-if="type === 'projects'" />
       <ContactWindow v-else-if="type === 'contact'" />
     </div>

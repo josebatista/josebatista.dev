@@ -3,6 +3,7 @@ title: 'Systemd Deep Dive: Writing Your Own Service Units'
 date: 2026-07-15
 tags: [linux, systemd, devops]
 description: Understanding systemd service files and how to write custom units for your applications.
+layout: PostLayout
 ---
 
 ## What is systemd?

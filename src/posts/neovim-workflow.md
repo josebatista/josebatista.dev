@@ -3,6 +3,7 @@ title: 'My Neovim Workflow for 2026'
 date: 2026-07-18
 tags: [neovim, workflow, dev]
 description: How I configured Neovim to replace my entire IDE setup with a terminal-based workflow.
+layout: PostLayout
 ---
 
 ## Why Neovim?

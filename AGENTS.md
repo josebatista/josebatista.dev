@@ -50,6 +50,13 @@ index.md (layout: false)
 - Closing animation: class `window-closing` added → 200ms timeout → emit `close`
 - Maximized windows sit below the fixed top bar (36px offset)
 
+### Blog deep linking
+- Every blog post uses a custom `PostLayout` (`.vitepress/theme/layouts/PostLayout.vue`) that renders `DesktopHome` and derives its slug from `useData().page.relativePath`
+- `DesktopHome.vue` accepts an `initialArticle` prop; `onMounted` opens the Blog window with `{ initialArticle }` passed via `Window.vue` → `BlogWindow.vue`
+- `BlogWindow.vue` reads `initialArticle`, finds the post by URL suffix, and opens the split view (post + terminal) instead of the grid
+- URL syncing: `openPost()` writes `history.replaceState` to the post URL (`/posts/<slug>`); `backToGrid()` resets to `/`. Posts use clean URLs (`cleanUrls: true`)
+- Post frontmatter (`src/posts/*.md`) must include `layout: PostLayout` for deep linking to work
+
 ### Key conventions
 - All imports of `.data.ts` files in Vue use `.js` extension (e.g., `from '../../loaders/posts.data.js'`)
 - `createContentLoader` globs are relative to `srcDir: 'src'`

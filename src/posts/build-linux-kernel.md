@@ -3,6 +3,7 @@ title: 'Building a Custom Linux Kernel: A Step-by-Step Guide'
 date: 2026-07-20
 tags: [linux, kernel, dev]
 description: A comprehensive walkthrough of compiling and configuring your own Linux kernel from source.
+layout: PostLayout
 ---
 
 ## Introduction

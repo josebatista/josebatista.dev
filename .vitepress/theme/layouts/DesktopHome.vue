@@ -36,10 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
+
+const props = withDefaults(defineProps<{ initialArticle?: string }>(), {
+  initialArticle: '',
+})
 
 interface Icon {
   id: string
@@ -74,10 +78,11 @@ const windows = ref<AppWindow[]>([])
 const activeWindow = ref<string | null>(null)
 let nextZ = 1
 
-function openWindow(icon: Icon) {
+function openWindow(icon: Icon, data?: any) {
   const existing = windows.value.find(w => w.id === icon.id)
   if (existing) {
     existing.minimized = false
+    existing.data = data
     focusWindow(icon.id)
     return
   }
@@ -103,10 +108,18 @@ function openWindow(icon: Icon) {
     minimized: false,
     maximized: false,
     zIndex: nextZ++,
+    data,
   })
 
   activeWindow.value = icon.id
 }
+
+onMounted(() => {
+  if (props.initialArticle) {
+    const blog = icons.find(i => i.id === 'blog')
+    if (blog) openWindow(blog, { initialArticle: props.initialArticle })
+  }
+})
 
 function closeWindow(id: string) {
   windows.value = windows.value.filter(w => w.id !== id)

@@ -3,7 +3,7 @@
     <div class="blog-toolbar">
       <template v-if="isGridView">
         <div class="toolbar-breadcrumb">
-          <span class="crumb">home</span>
+          <span class="crumb">~</span>
           <span class="crumb-sep">/</span>
           <span class="crumb">Documents</span>
           <span class="crumb-sep">/</span>
@@ -11,11 +11,11 @@
         </div>
       </template>
       <template v-else>
-        <button class="toolbar-back" @click="isGridView = true">
+        <button class="toolbar-back" @click="backToGrid">
           ← Back
         </button>
         <div class="toolbar-breadcrumb">
-          <span class="crumb clickable" @click="isGridView = true">Blog</span>
+          <span class="crumb clickable" @click="backToGrid">Blog</span>
           <span class="crumb-sep">/</span>
           <span class="crumb active">{{ selectedPost?.title }}</span>
         </div>
@@ -45,7 +45,7 @@
             :title="post.title"
             :description="post.description"
             :active="selectedPost?.url === post.url"
-            @select="selectedPost = post"
+            @select="openPost(post)"
           >
             <template #meta>
               <div class="list-item-date">{{ post.date }}</div>
@@ -95,10 +95,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import GridItem from '../components/GridItem.vue'
 import ListItem from '../components/ListItem.vue'
 import { data as posts } from '../../loaders/posts.data.js'
+
+const props = defineProps<{ initialArticle?: string }>()
 
 const isGridView = ref(true)
 const selectedPost = ref<(typeof posts)[number] | null>(null)
@@ -122,5 +124,29 @@ const allTags = computed(() => {
 function openPost(post: (typeof posts)[number]) {
   selectedPost.value = post
   isGridView.value = false
+  syncUrl(post.url)
 }
+
+function backToGrid() {
+  isGridView.value = true
+  syncUrl('/')
+}
+
+function syncUrl(url: string) {
+  if (url.startsWith('/posts/')) {
+    window.history.replaceState({}, '', url)
+  } else {
+    window.history.replaceState({}, '', '/')
+  }
+}
+
+onMounted(() => {
+  if (props.initialArticle) {
+    const post = posts.find(p => p.url.endsWith(`/${props.initialArticle}`))
+    if (post) {
+      selectedPost.value = post
+      isGridView.value = false
+    }
+  }
+})
 </script>
