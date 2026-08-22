@@ -1,7 +1,9 @@
 <template>
   <main class="desktop" @contextmenu.prevent>
     <h1 class="sr-only">{{ title }}</h1>
-    <div class="desktop-wallpaper"></div>
+    <div class="desktop-wallpaper">
+      <MatrixRain />
+    </div>
 
     <TopBar />
 
@@ -41,6 +43,7 @@ import { ref, onMounted } from 'vue'
 import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
+import MatrixRain from '../components/MatrixRain.vue'
 
 const props = withDefaults(defineProps<{ initialArticle?: string; title?: string }>(), {
   initialArticle: '',
