@@ -127,7 +127,10 @@ function openWindow(icon: Icon, data?: any) {
     maximized: false,
     zIndex: nextZ++,
     data,
-    trigger: document.activeElement instanceof HTMLElement ? document.activeElement : null,
+    trigger:
+      typeof document !== 'undefined' && document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null,
   })
 
   activeWindow.value = icon.id
