@@ -2,7 +2,7 @@
   <button type="button" class="ui-button grid-item" @click="$emit('select')">
     <div class="grid-item-thumb">
       <slot name="thumbnail">
-        <span class="grid-item-icon" aria-hidden="true">{{ icon }}</span>
+        <span class="grid-item-icon material-symbols-outlined" aria-hidden="true">{{ icon }}</span>
       </slot>
     </div>
     <div class="grid-item-body">
@@ -20,7 +20,7 @@ withDefaults(defineProps<{
   title?: string
   date?: string
 }>(), {
-  icon: '📄',
+  icon: 'description',
 })
 
 defineEmits<{ select: [] }>()

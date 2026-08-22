@@ -11,17 +11,22 @@
         </div>
       </template>
       <template v-else>
-        <button class="toolbar-back" @click="backToGrid">
-          ← Back
+        <button class="toolbar-back" @click="backToGrid" aria-label="Back to list">
+          <span class="material-symbols-outlined">arrow_back</span>
         </button>
         <div class="toolbar-breadcrumb">
-          <button type="button" class="ui-button crumb clickable" @click="backToGrid">Blog</button>
+          <span class="crumb">..</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb">Blog</span>
           <span class="crumb-sep">/</span>
           <span class="crumb active">{{ selectedPost?.title }}</span>
         </div>
       </template>
       <div class="toolbar-search">
-        <input type="text" placeholder="Search posts..." aria-label="Search posts" v-model="searchQuery" />
+        <div class="search-wrapper">
+          <span class="search-icon material-symbols-outlined">search</span>
+          <input type="text" placeholder="Search posts..." aria-label="Search posts" v-model="searchQuery" />
+        </div>
       </div>
     </div>
 
