@@ -1,9 +1,9 @@
 <template>
   <div class="projects-window">
-    <div class="projects-body">
+    <div class="projects-body" tabindex="0">
       <div class="terminal-line"><span class="prompt">~</span> ls -la</div>
       <div class="project-card" v-for="project in projects" :key="project.name">
-        <h3 class="project-name">{{ project.name }}</h3>
+        <h2 class="project-name">{{ project.name }}</h2>
         <p class="project-desc">{{ project.description }}</p>
         <div class="project-meta">
           <span class="project-lang">{{ project.language }}</span>
