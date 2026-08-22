@@ -39,7 +39,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useData } from 'vitepress'
 import MatrixRain from '../components/MatrixRain.vue'
 import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
@@ -48,6 +49,7 @@ import { useI18n, initI18n } from '../i18n/index'
 import { SITE_NAME, WINDOW_TYPES, SECTIONS, type WindowType } from '../constants'
 
 const { t } = useI18n()
+const { page, site } = useData()
 
 const props = withDefaults(defineProps<{ initialArticle?: string; title?: string }>(), {
   initialArticle: '',
@@ -106,6 +108,7 @@ function openWindow(icon: Icon, data?: any) {
     [SECTIONS.BLOG]: { x: 200, y: 80, width: 960, height: 640 },
     [SECTIONS.PROJECTS]: { x: 250, y: 120, width: 720, height: 500 },
     [SECTIONS.CONTACT]: { x: 350, y: 150, width: 640, height: 480 },
+    [SECTIONS.NOT_FOUND]: { x: 320, y: 140, width: 560, height: 380 },
   }
 
   const pos = positions[icon.id] || { x: 200, y: 100, width: 720, height: 540 }
@@ -129,6 +132,22 @@ function openWindow(icon: Icon, data?: any) {
   activeWindow.value = icon.id
 }
 
+function openNotFoundWindow() {
+  const nfIcon: Icon = {
+    id: SECTIONS.NOT_FOUND,
+    label: t('notFound.title'),
+    icon: 'error',
+    type: WINDOW_TYPES.NOT_FOUND,
+  }
+  openWindow(nfIcon)
+  // Clean the invalid path from the URL bar without triggering a route
+  // change (VitePress only reacts to click/popstate, not replaceState), so
+  // the 404 window stays open on the desktop.
+  if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+    history.replaceState(null, '', site.value?.base || '/')
+  }
+}
+
 onMounted(() => {
   initI18n()
   if (props.initialArticle) {
@@ -136,6 +155,14 @@ onMounted(() => {
     if (blog) openWindow(blog, { initialArticle: props.initialArticle })
   }
 })
+
+watch(
+  () => page.value?.isNotFound,
+  (isNotFound) => {
+    if (isNotFound) openNotFoundWindow()
+  },
+  { immediate: true }
+)
 
 function closeWindow(id: string) {
   const win = windows.value.find(w => w.id === id)

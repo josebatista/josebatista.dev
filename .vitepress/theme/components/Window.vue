@@ -28,6 +28,7 @@
       <BlogWindow v-else-if="type === WINDOW_TYPES.BLOG" :initial-article="data?.initialArticle" />
       <ProjectsWindow v-else-if="type === WINDOW_TYPES.PROJECTS" />
       <ContactWindow v-else-if="type === WINDOW_TYPES.CONTACT" />
+      <NotFoundWindow v-else-if="type === WINDOW_TYPES.NOT_FOUND" />
     </div>
     <div
       v-if="!maximized"
@@ -44,6 +45,7 @@ import AboutWindow from '../content/AboutWindow.vue'
 import BlogWindow from '../content/BlogWindow.vue'
 import ProjectsWindow from '../content/ProjectsWindow.vue'
 import ContactWindow from '../content/ContactWindow.vue'
+import NotFoundWindow from '../content/NotFoundWindow.vue'
 import { useI18n } from '../i18n/index'
 import { WINDOW_TYPES } from '../constants'
 

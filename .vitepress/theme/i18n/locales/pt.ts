@@ -40,4 +40,10 @@ export default {
     disk: 'disco usado',
   },
   eof: 'EOF',
+  notFound: {
+    title: '404',
+    heading: '404 — Página Não Encontrada',
+    message: 'A rota solicitada não existe neste sistema.',
+    hint: 'Feche esta janela para voltar à área de trabalho e continuar explorando.',
+  },
 }

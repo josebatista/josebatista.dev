@@ -40,4 +40,10 @@ export default {
     disk: 'disk used',
   },
   eof: 'EOF',
+  notFound: {
+    title: '404',
+    heading: '404 — Page Not Found',
+    message: 'The requested route does not exist on this system.',
+    hint: 'Close this window to return to the desktop and keep exploring.',
+  },
 }

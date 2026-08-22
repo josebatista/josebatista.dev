@@ -8,6 +8,7 @@ export const WINDOW_TYPES = {
   BLOG: 'blog',
   PROJECTS: 'projects',
   CONTACT: 'contact',
+  NOT_FOUND: 'not-found',
 } as const
 
 export type WindowType = (typeof WINDOW_TYPES)[keyof typeof WINDOW_TYPES]
@@ -18,6 +19,7 @@ export const SECTIONS = {
   PROJECTS: 'projects',
   CONTACT: 'contact',
   POSTS: 'posts',
+  NOT_FOUND: 'not-found',
 } as const
 
 export const SYSINFO = {
