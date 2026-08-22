@@ -75,9 +75,9 @@ interface AppWindow {
 
 const icons: Icon[] = [
   { id: 'about', label: 'about_me.sh', icon: 'terminal', type: 'terminal' },
-  { id: 'blog', label: 'Blog', icon: 'folder', type: 'blog' },
-  { id: 'projects', label: 'Projects.lnk', icon: 'folder_open', type: 'projects' },
-  { id: 'contact', label: 'Contact.sh', icon: 'mail', type: 'contact' },
+  { id: 'blog', label: 'blog', icon: 'folder', type: 'blog' },
+  { id: 'projects', label: 'projects.lnk', icon: 'folder_open', type: 'projects' },
+  { id: 'contact', label: 'contact.sh', icon: 'mail', type: 'contact' },
 ]
 
 const windows = ref<AppWindow[]>([])

@@ -223,8 +223,7 @@ html, body {
   font-size: 11px;
   color: var(--on-surface);
   text-align: center;
-  word-break: break-all;
-  max-width: 72px;
+  white-space: nowrap;
   line-height: 1.3;
 }
 
