@@ -2,6 +2,10 @@ export default {
   switch: {
     to: 'Mudar para Inglês',
   },
+  theme: {
+    toLight: 'Mudar para modo claro',
+    toDark: 'Mudar para modo escuro',
+  },
   window: {
     close: 'Fechar janela',
     maximize: 'Maximizar janela',
@@ -24,8 +28,8 @@ export default {
     search: 'Buscar posts...',
     back: 'Voltar aos posts',
     crumb: {
-      root: 'blog',
-      home: 'início',
+      document: 'documentos',
+      blog: 'blog',
     },
   },
   sidebar: {

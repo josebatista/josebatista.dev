@@ -8,7 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useTheme } from '../theme/index'
 
 /**
  * Tunable parameters for the Matrix rain wallpaper.
@@ -24,6 +25,26 @@ const config = {
   resetChance: 0.025, // probability a column restarts at the top once off-screen
   cssOpacity: 0.6, // overall canvas opacity (subtlety of the whole effect)
   maxDpr: 1.5, // cap device pixel ratio for performance
+}
+
+const { theme } = useTheme()
+
+// Colors are supplied at runtime from CSS custom properties via readColors()
+// (--matrix-glyph / --matrix-head / --shadow-rgb); no hardcoded values here.
+// readColors() always runs in onMounted before any drawing, so empty defaults
+// are safe (the canvas never renders during SSR).
+const colors = ref({ glyph: '', head: '' })
+const shadowRgb = ref('')
+
+function readColors() {
+  if (typeof document === 'undefined') return
+  const cs = getComputedStyle(document.documentElement)
+  const glyph = cs.getPropertyValue('--matrix-glyph').trim()
+  const head = cs.getPropertyValue('--matrix-head').trim()
+  const sr = cs.getPropertyValue('--shadow-rgb').trim()
+  if (glyph) colors.value.glyph = glyph
+  if (head) colors.value.head = head
+  if (sr) shadowRgb.value = sr
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -72,7 +93,7 @@ function drawFrame() {
   if (!ctx) return
   // Fade previous frame toward transparent so the wallpaper gradient shows through
   ctx.globalCompositeOperation = 'destination-out'
-  ctx.fillStyle = `rgba(0,0,0,${config.fadeAlpha})`
+  ctx.fillStyle = `rgba(${shadowRgb.value},${config.fadeAlpha})`
   ctx.fillRect(0, 0, width, height)
   ctx.globalCompositeOperation = 'source-over'
 
@@ -83,8 +104,8 @@ function drawFrame() {
     const char = chars[(Math.random() * chars.length) | 0]
     ctx.fillStyle =
       Math.random() > 1 - config.headChance
-        ? `rgba(200,255,215,${config.headAlpha})`
-        : `rgba(0,255,65,${config.glyphAlpha})`
+        ? colors.value.head
+        : colors.value.glyph
     ctx.fillText(char, x, y)
     if (y > height && Math.random() > 1 - config.resetChance) {
       drops[i] = 0
@@ -126,6 +147,11 @@ function onVisibility() {
 }
 
 onMounted(() => {
+  readColors()
+  watch(theme, () => {
+    readColors()
+    if (reduceMotion && !running && ctx) drawFrame()
+  })
   start()
   document.addEventListener('visibilitychange', onVisibility)
   const parent = canvasRef.value?.parentElement

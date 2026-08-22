@@ -19,7 +19,7 @@
     <Window
       v-for="win in windows"
       :key="win.id"
-      :title="win.title"
+      :title-key="win.titleKey"
       :type="win.type"
       :icon="win.icon"
       :z-index="win.zIndex"
@@ -58,6 +58,7 @@ const props = withDefaults(defineProps<{ initialArticle?: string; title?: string
 
 interface Icon {
   id: string
+  key?: string
   label: string
   icon: string
   type: WindowType
@@ -65,7 +66,7 @@ interface Icon {
 
 interface AppWindow {
   id: string
-  title: string
+  titleKey: string
   type: WindowType
   icon: string
   x: number
@@ -115,7 +116,7 @@ function openWindow(icon: Icon, data?: any) {
 
   windows.value.push({
     id: icon.id,
-    title: icon.label,
+    titleKey: icon.key ?? icon.label,
     type: icon.type,
     icon: icon.icon,
     x: pos.x,
@@ -135,6 +136,7 @@ function openWindow(icon: Icon, data?: any) {
 function openNotFoundWindow() {
   const nfIcon: Icon = {
     id: SECTIONS.NOT_FOUND,
+    key: 'notFound.title',
     label: t('notFound.title'),
     icon: 'error',
     type: WINDOW_TYPES.NOT_FOUND,

@@ -20,7 +20,7 @@
         <button class="dot dot-red" @click.stop="handleClose" :title="t('window.close')" :aria-label="t('window.close')"><span class="dot-icon" aria-hidden="true">✕</span></button>
         <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? t('window.restore') : t('window.maximize')" :aria-label="maximized ? t('window.restore') : t('window.maximize')"><span class="dot-icon" aria-hidden="true">{{ maximized ? '⧉' : '□' }}</span></button>
       </div>
-      <span class="window-title" :id="titleId">{{ title }}</span>
+      <span class="window-title" :id="titleId">{{ t(titleKey) }}</span>
       <div class="window-spacer"></div>
     </div>
     <div class="window-content">
@@ -52,7 +52,7 @@ import { WINDOW_TYPES } from '../constants'
 const { t } = useI18n()
 
 const props = defineProps<{
-  title: string
+  titleKey: string
   type: string
   icon: string
   zIndex: number

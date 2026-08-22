@@ -5,9 +5,9 @@
         <div class="toolbar-breadcrumb">
           <span class="crumb">~</span>
           <span class="crumb-sep">/</span>
-          <span class="crumb">{{ t('blog.crumb.root') }}</span>
+          <span class="crumb">{{ t('blog.crumb.document') }}</span>
           <span class="crumb-sep">/</span>
-          <span class="crumb active">{{ t('blog.crumb.home') }}</span>
+          <span class="crumb active">{{ t('blog.crumb.blog') }}</span>
         </div>
       </template>
       <template v-else>
@@ -17,7 +17,7 @@
         <div class="toolbar-breadcrumb">
           <span class="crumb">..</span>
           <span class="crumb-sep">/</span>
-          <span class="crumb">{{ t('blog.crumb.home') }}</span>
+          <span class="crumb">{{ t('blog.crumb.blog') }}</span>
           <span class="crumb-sep">/</span>
           <span class="crumb active">{{ activePost?.title }}</span>
         </div>

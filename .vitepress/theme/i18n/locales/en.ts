@@ -2,6 +2,10 @@ export default {
   switch: {
     to: 'Switch to Portuguese',
   },
+  theme: {
+    toLight: 'Switch to light mode',
+    toDark: 'Switch to dark mode',
+  },
   window: {
     close: 'Close window',
     maximize: 'Maximize window',
@@ -24,8 +28,8 @@ export default {
     search: 'Search posts...',
     back: 'Back to posts',
     crumb: {
-      root: 'blog',
-      home: 'home',
+      document: 'document',
+      blog: 'blog',
     },
   },
   sidebar: {
