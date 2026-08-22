@@ -17,23 +17,23 @@
       @dblclick.prevent="onTitlebarDblclick"
     >
       <div class="window-controls" @dblclick.stop>
-        <button class="dot dot-red" @click.stop="handleClose" title="Close" aria-label="Close window"><span class="dot-icon" aria-hidden="true">✕</span></button>
-        <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? 'Restore' : 'Maximize'" :aria-label="maximized ? 'Restore window' : 'Maximize window'"><span class="dot-icon" aria-hidden="true">{{ maximized ? '⧉' : '□' }}</span></button>
+        <button class="dot dot-red" @click.stop="handleClose" :title="t('window.close')" :aria-label="t('window.close')"><span class="dot-icon" aria-hidden="true">✕</span></button>
+        <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? t('window.restore') : t('window.maximize')" :aria-label="maximized ? t('window.restore') : t('window.maximize')"><span class="dot-icon" aria-hidden="true">{{ maximized ? '⧉' : '□' }}</span></button>
       </div>
       <span class="window-title" :id="titleId">{{ title }}</span>
       <div class="window-spacer"></div>
     </div>
-    <div class="window-content" ref="contentRef">
-      <AboutWindow v-if="type === 'terminal'" />
-      <BlogWindow v-else-if="type === 'blog'" :initial-article="data?.initialArticle" />
-      <ProjectsWindow v-else-if="type === 'projects'" />
-      <ContactWindow v-else-if="type === 'contact'" />
+    <div class="window-content">
+      <AboutWindow v-if="type === WINDOW_TYPES.TERMINAL" />
+      <BlogWindow v-else-if="type === WINDOW_TYPES.BLOG" :initial-article="data?.initialArticle" />
+      <ProjectsWindow v-else-if="type === WINDOW_TYPES.PROJECTS" />
+      <ContactWindow v-else-if="type === WINDOW_TYPES.CONTACT" />
     </div>
     <div
       v-if="!maximized"
       class="window-resizer"
       @mousedown.stop.prevent="startResize"
-      title="Resize"
+      :title="t('window.resize')"
     ></div>
   </div>
 </template>
@@ -44,6 +44,10 @@ import AboutWindow from '../content/AboutWindow.vue'
 import BlogWindow from '../content/BlogWindow.vue'
 import ProjectsWindow from '../content/ProjectsWindow.vue'
 import ContactWindow from '../content/ContactWindow.vue'
+import { useI18n } from '../i18n/index'
+import { WINDOW_TYPES } from '../constants'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   title: string
@@ -84,8 +88,6 @@ const x = ref(props.initialX)
 const y = ref(props.initialY)
 const width = ref(props.initialWidth)
 const height = ref(props.initialHeight)
-const contentRef = ref<HTMLElement | null>(null)
-
 const isDragging = ref(false)
 const dragOffset = { x: 0, y: 0 }
 let lastTitlebarClick = 0

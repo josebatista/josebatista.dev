@@ -17,10 +17,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { data as pages } from '../../loaders/projects.data.js'
+import { useI18n } from '../i18n/index'
+
+const { isPT } = useI18n()
 
 const projects = computed(() => {
   if (pages && pages.length > 0) {
-    return (pages[0].frontmatter as any).projects || []
+    const page = pages[0] as any
+    return isPT.value && page.projects_pt?.length ? page.projects_pt : page.projects || []
   }
   return []
 })

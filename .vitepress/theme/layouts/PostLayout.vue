@@ -6,6 +6,7 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import DesktopHome from './DesktopHome.vue'
+import { SITE_NAME } from '../constants'
 
 const { page } = useData()
 
@@ -16,5 +17,5 @@ const articleSlug = computed(() => {
   return file.replace(/\.md$/, '')
 })
 
-const pageTitle = computed(() => page.value?.title || 'josebatista.dev')
+const pageTitle = computed(() => page.value?.title || SITE_NAME)
 </script>

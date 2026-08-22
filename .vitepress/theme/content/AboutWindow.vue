@@ -4,26 +4,26 @@
 
     <div class="sysinfo-grid">
       <div class="sysinfo-item">
-        <span class="sysinfo-label">OS</span>
+        <span class="sysinfo-label">{{ t('sys.os') }}</span>
         <span class="sysinfo-value">Neomancy v2.4.1</span>
       </div>
       <div class="sysinfo-item">
-        <span class="sysinfo-label">Kernel</span>
+        <span class="sysinfo-label">{{ t('sys.kernel') }}</span>
         <span class="sysinfo-value">6.5.0-dev-generic</span>
       </div>
       <div class="sysinfo-item">
-        <span class="sysinfo-label">Shell</span>
+        <span class="sysinfo-label">{{ t('sys.shell') }}</span>
         <span class="sysinfo-value">Zsh (Oh-My-Zsh)</span>
       </div>
       <div class="sysinfo-item">
-        <span class="sysinfo-label">WM</span>
+        <span class="sysinfo-label">{{ t('sys.wm') }}</span>
         <span class="sysinfo-value">Mutter/Custom</span>
       </div>
     </div>
 
     <template #statusbar>
-      <span>zsh | utf-8 | josebatista@os-v1.0</span>
-      <span>SYNC: OK | v1.0.4-STABLE</span>
+      <span>{{ SYSINFO.terminal }}</span>
+      <span>{{ SYSINFO.sync }}</span>
     </template>
   </Terminal>
 </template>
@@ -32,10 +32,15 @@
 import { computed } from 'vue'
 import Terminal from '../components/Terminal.vue'
 import { data as pages } from '../../loaders/about.data.js'
+import { useI18n } from '../i18n/index'
+import { SYSINFO } from '../constants'
+
+const { isPT, t } = useI18n()
 
 const content = computed(() => {
   if (pages && pages.length > 0) {
-    return pages[0].html
+    const page = pages[0] as any
+    return isPT.value && page.html_pt ? page.html_pt : page.html_en
   }
   return ''
 })

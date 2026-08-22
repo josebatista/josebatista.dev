@@ -108,3 +108,15 @@ Colors, spacing, typography in `:root` inside `style.css`. Dark theme only (`app
 
 ### Build output
 Static files in `.vitepress/dist/`. Each markdown page generates its own HTML (e.g., `/posts/build-linux-kernel.html`).
+
+### Bilingual content (EN / PT)
+The site has an English/Portuguese language switcher in the top bar. State lives in a tiny i18n module (no external dependency).
+
+- **i18n module:** `.vitepress/theme/i18n/index.ts` — a module-level `ref` (`locale`, default `en-US`) plus `toggleLocale()` and `useI18n()` returning `{ locale, isPT, toggleLocale, t }`. `t(key)` resolves dot-path keys from `locales/en.ts` / `locales/pt.ts`. It is a real singleton, so any component importing `useI18n` re-renders when the language changes.
+- **UI strings** (window controls, breadcrumbs, sidebar labels, date/statusbar formatting, desktop icon labels, etc.) use `t('...')`. Keys live in `.vitepress/theme/i18n/locales/{en,pt}.ts`. Dates are formatted with `Intl.DateTimeFormat(isPT ? 'pt-BR' : 'en-US', ...)`.
+- **Posts:** English source lives at `src/posts/<slug>.md` (this determines the public URL `/posts/<slug>`). The Portuguese twin lives at `src/pt-BR/posts/<slug>.md`. The loader (`.vitepress/loaders/posts.data.ts`) globs BOTH `posts/**/*.md` and `pt-BR/posts/**/*.md`, renders each with VitePress's markdown pipeline, and pairs them by basename/slug — outputting `html_en` (from `posts/<slug>.md`) and `html_pt` (from `pt-BR/posts/<slug>.md`). `BlogWindow.vue` picks `html_pt` when `isPT` is true.
+- **About / Projects / Contact:** English at `src/<name>.md`, Portuguese twin at `src/pt-BR/<name>.md`. The loaders (`about.data.ts`, `projects.data.ts`, `contact.data.ts`) glob both paths and pair by basename, exposing `html_en`/`html_pt` (about) or `projects`/`projects_pt` and `links`/`links_pt` (projects/contact). Components select the localized field with `isPT`.
+- **`srcExclude: ['**/pt-BR/**']`** in `config.ts` keeps the entire `pt-BR/` tree OUT of the page build (no stray `/pt-BR/...` pages) while still letting the content loaders read and render those files. Do NOT add `pt-BR` to `srcExclude` removal or the translations are lost.
+- **To add a bilingual post:** create `src/posts/<slug>.md` (EN, with `layout: PostLayout`) and `src/pt-BR/posts/<slug>.md` (PT body; `layout` not needed — it is never built as a page). The loader handles the rest. For About/Projects/Contact translations, add the matching `src/pt-BR/<name>.md` twin.
+- **To add a UI string:** add the key to BOTH `locales/en.ts` and `locales/pt.ts`, then reference with `t('your.key')`.
+

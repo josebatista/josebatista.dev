@@ -2,3 +2,4 @@ node_modules/
 .playwright-mcp/
 .vitepress/cache
 .vitepress/dist
+*.timestamp-*.mjs

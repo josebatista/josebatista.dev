@@ -39,28 +39,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
 import MatrixRain from '../components/MatrixRain.vue'
+import { useI18n } from '../i18n/index'
+import { SITE_NAME, WINDOW_TYPES, SECTIONS, type WindowType } from '../constants'
+
+const { t } = useI18n()
 
 const props = withDefaults(defineProps<{ initialArticle?: string; title?: string }>(), {
   initialArticle: '',
-  title: 'josebatista.dev',
+  title: SITE_NAME,
 })
 
 interface Icon {
   id: string
   label: string
   icon: string
-  type: 'terminal' | 'blog' | 'projects' | 'contact'
+  type: WindowType
 }
 
 interface AppWindow {
   id: string
   title: string
-  type: 'terminal' | 'blog' | 'projects' | 'contact'
+  type: WindowType
   icon: string
   x: number
   y: number
@@ -73,12 +77,16 @@ interface AppWindow {
   trigger?: HTMLElement | null
 }
 
-const icons: Icon[] = [
-  { id: 'about', label: 'about_me.sh', icon: 'terminal', type: 'terminal' },
-  { id: 'blog', label: 'blog', icon: 'folder', type: 'blog' },
-  { id: 'projects', label: 'projects.lnk', icon: 'folder_open', type: 'projects' },
-  { id: 'contact', label: 'contact.sh', icon: 'mail', type: 'contact' },
+const iconDefs: { id: string; key: string; icon: string; type: WindowType }[] = [
+  { id: SECTIONS.ABOUT, key: 'icons.about', icon: 'terminal', type: WINDOW_TYPES.TERMINAL },
+  { id: SECTIONS.BLOG, key: 'icons.blog', icon: 'folder', type: WINDOW_TYPES.BLOG },
+  { id: SECTIONS.PROJECTS, key: 'icons.projects', icon: 'folder_open', type: WINDOW_TYPES.PROJECTS },
+  { id: SECTIONS.CONTACT, key: 'icons.contact', icon: 'mail', type: WINDOW_TYPES.CONTACT },
 ]
+
+const icons = computed(() =>
+  iconDefs.map((d) => ({ ...d, label: t(d.key) }))
+)
 
 const windows = ref<AppWindow[]>([])
 const activeWindow = ref<string | null>(null)
@@ -94,10 +102,10 @@ function openWindow(icon: Icon, data?: any) {
   }
 
   const positions: Record<string, { x: number; y: number; width: number; height: number }> = {
-    about: { x: 300, y: 100, width: 720, height: 540 },
-    blog: { x: 200, y: 80, width: 960, height: 640 },
-    projects: { x: 250, y: 120, width: 720, height: 500 },
-    contact: { x: 350, y: 150, width: 640, height: 480 },
+    [SECTIONS.ABOUT]: { x: 300, y: 100, width: 720, height: 540 },
+    [SECTIONS.BLOG]: { x: 200, y: 80, width: 960, height: 640 },
+    [SECTIONS.PROJECTS]: { x: 250, y: 120, width: 720, height: 500 },
+    [SECTIONS.CONTACT]: { x: 350, y: 150, width: 640, height: 480 },
   }
 
   const pos = positions[icon.id] || { x: 200, y: 100, width: 720, height: 540 }
@@ -123,7 +131,7 @@ function openWindow(icon: Icon, data?: any) {
 
 onMounted(() => {
   if (props.initialArticle) {
-    const blog = icons.find(i => i.id === 'blog')
+    const blog = icons.value.find(i => i.id === SECTIONS.BLOG)
     if (blog) openWindow(blog, { initialArticle: props.initialArticle })
   }
 })

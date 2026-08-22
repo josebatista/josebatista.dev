@@ -1,19 +1,42 @@
 import { createContentLoader } from 'vitepress'
 
-export default createContentLoader('posts/*.md', {
+import { LOCALE_PT, SECTIONS } from '../theme/constants'
+
+const isPt = (url: string) => url.includes(`/${LOCALE_PT}/`)
+const slugOf = (url: string) => url.split('/').filter(Boolean).pop() || ''
+
+export default createContentLoader([`${SECTIONS.POSTS}/**/*.md`, `${LOCALE_PT}/${SECTIONS.POSTS}/**/*.md`], {
   render: true,
-  excerpt: true,
   transform(rawData) {
-    return rawData.sort((a, b) => {
-      return +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
-    }).map(page => ({
-      url: page.url,
-      title: page.frontmatter.title,
-      date: new Date(page.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      tags: page.frontmatter.tags || [],
-      description: page.frontmatter.description || '',
-      html: page.html,
-      excerpt: page.excerpt
-    }))
-  }
+    const ptHtml = new Map<string, string>()
+    const ptFrontmatter = new Map<string, Record<string, any>>()
+
+    const base = rawData
+      .filter((page) => {
+        if (isPt(page.url)) {
+          const slug = slugOf(page.url)
+          ptHtml.set(slug, page.html || '')
+          ptFrontmatter.set(slug, page.frontmatter || {})
+          return false
+        }
+        return true
+      })
+      .sort((a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date))
+
+    return base.map((page) => {
+      const slug = slugOf(page.url)
+      const pt = ptFrontmatter.get(slug) || {}
+      return {
+        url: page.url,
+        title: page.frontmatter.title,
+        title_pt: pt.title || '',
+        date: new Date(page.frontmatter.date).toISOString(),
+        tags: page.frontmatter.tags || [],
+        description: page.frontmatter.description || '',
+        description_pt: pt.description || '',
+        html_en: page.html || '',
+        html_pt: ptHtml.get(slug) || '',
+      }
+    })
+  },
 })

@@ -19,10 +19,14 @@
 import { computed } from 'vue'
 import Terminal from '../components/Terminal.vue'
 import { data as pages } from '../../loaders/contact.data.js'
+import { useI18n } from '../i18n/index'
+
+const { isPT } = useI18n()
 
 const links = computed(() => {
   if (pages && pages.length > 0) {
-    return (pages[0].frontmatter as any).links || []
+    const page = pages[0] as any
+    return isPT.value && page.links_pt?.length ? page.links_pt : page.links || []
   }
   return []
 })

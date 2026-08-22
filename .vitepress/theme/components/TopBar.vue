@@ -1,19 +1,34 @@
 <template>
   <header class="top-bar">
-    <span class="brand">josebatista.dev</span>
-    <span class="clock">{{ time }}</span>
+    <span class="brand">{{ SITE_NAME }}</span>
+    <div class="top-bar-right">
+      <button
+        type="button"
+        class="lang-switch ui-button"
+        :aria-label="t('switch.to')"
+        :title="t('switch.to')"
+        @click="toggleLocale"
+      >
+        <CountryFlag :country="locale === LOCALE_EN ? 'us' : 'br'" />
+        <span class="lang-label sr-only">{{ locale === LOCALE_EN ? 'PT' : 'EN' }}</span>
+      </button>
+      <span class="clock">{{ time }}</span>
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '../i18n/index'
+import { SITE_NAME, LOCALE_EN } from '../constants'
+import CountryFlag from './CountryFlag.vue'
 
+const { locale, toggleLocale, t } = useI18n()
 const time = ref('')
-let timer: number
 
 function updateClock() {
   const now = new Date()
-  time.value = now.toLocaleDateString('en-US', {
+  time.value = now.toLocaleDateString(locale.value, {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -21,12 +36,11 @@ function updateClock() {
   })
 }
 
+let timer: number
 onMounted(() => {
   updateClock()
   timer = window.setInterval(updateClock, 10000)
 })
-
-onUnmounted(() => {
-  clearInterval(timer)
-})
+watch(locale, updateClock)
+onUnmounted(() => clearInterval(timer))
 </script>

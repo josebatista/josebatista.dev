@@ -170,6 +170,36 @@ html, body {
   color: var(--on-surface-variant);
 }
 
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: var(--on-surface);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.lang-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.lang-flag {
+  display: block;
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
 /* ─── Desktop Icons ─── */
 .desktop-icons {
   position: absolute;
