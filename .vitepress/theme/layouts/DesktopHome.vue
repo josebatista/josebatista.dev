@@ -83,7 +83,7 @@ interface AppWindow {
 const iconDefs: { id: string; key: string; icon: string; type: WindowType }[] = [
   { id: SECTIONS.ABOUT, key: 'icons.about', icon: 'terminal', type: WINDOW_TYPES.TERMINAL },
   { id: SECTIONS.BLOG, key: 'icons.blog', icon: 'folder', type: WINDOW_TYPES.BLOG },
-  { id: SECTIONS.PROJECTS, key: 'icons.projects', icon: 'folder_open', type: WINDOW_TYPES.PROJECTS },
+  { id: SECTIONS.PROJECTS, key: 'icons.projects', icon: 'folder', type: WINDOW_TYPES.PROJECTS },
   { id: SECTIONS.CONTACT, key: 'icons.contact', icon: 'mail', type: WINDOW_TYPES.CONTACT },
 ]
 

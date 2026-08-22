@@ -87,7 +87,7 @@ index.md (layout: false)
 - `Terminal.vue` — wraps content in a terminal frame (prompt line + body slot + blinking cursor + optional statusbar slot)
 - `GridItem.vue` — reusable grid card with named slots `thumbnail` and default `body` (defaults to `description` Material Symbol icon + title + date)
 - `ListItem.vue` — reusable sidebar row with props `title`, `description`, `active` and a `#meta` slot for tags/date
-- Desktop icons defined in `DesktopHome.vue` — 4 icons: about_me.sh (terminal), Blog (folder), Projects.lnk (folder_open), Contact.sh (mail)
+- Desktop icons defined in `DesktopHome.vue` — 4 icons: about_me.sh (terminal), Blog (folder), Projects.lnk (folder), Contact.sh (mail)
 
 ### Icon system (Material Symbols Outlined)
 - All UI icons use **Material Symbols Outlined** (ligature font), not emoji or text glyphs.

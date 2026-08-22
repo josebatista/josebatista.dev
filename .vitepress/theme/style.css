@@ -61,6 +61,15 @@ html, body {
   padding-top: 0 !important;
 }
 
+/* Self-hosted, subsetted Material Symbols (only the icons used on the site) */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('/material-symbols-outlined.woff2') format('woff2');
+}
+
 /* ─── Accessibility ─── */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
