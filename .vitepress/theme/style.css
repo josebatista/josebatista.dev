@@ -242,12 +242,8 @@ html, body {
 .icon-symbol {
   font-size: 22px;
   font-weight: 700;
-  color: var(--secondary);
+  color: var(--primary);
 }
-
-.desktop-icon:nth-child(1) .icon-symbol { color: var(--primary); }
-.desktop-icon:nth-child(3) .icon-symbol { color: var(--secondary); }
-.desktop-icon:nth-child(4) .icon-symbol { color: var(--primary); }
 
 .icon-label {
   font-size: 11px;
