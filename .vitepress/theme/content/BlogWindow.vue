@@ -136,6 +136,7 @@ async function openPost(post: (typeof posts)[number]) {
   syncUrl(post.url)
   document.title = `${post.title} | josebatista.dev`
   await nextTick()
+  if (articleRef.value) articleRef.value.scrollTop = 0
   articleRef.value?.focus({ preventScroll: true })
 }
 
