@@ -90,7 +90,7 @@
     </div>
 
     <div class="window-statusbar">
-      <span>{{ filteredPosts.length }} items | 2.4 MB | 82% Disk Space Used</span>
+      <span aria-live="polite">{{ filteredPosts.length }} items | 2.4 MB | 82% Disk Space Used</span>
       <span>Permission: rwxr-xr-x | User: josebatista</span>
     </div>
   </div>
@@ -129,6 +129,7 @@ async function openPost(post: (typeof posts)[number]) {
   selectedPost.value = post
   isGridView.value = false
   syncUrl(post.url)
+  document.title = `${post.title} | josebatista.dev`
   await nextTick()
   articleRef.value?.focus({ preventScroll: true })
 }
@@ -136,6 +137,7 @@ async function openPost(post: (typeof posts)[number]) {
 async function backToGrid() {
   isGridView.value = true
   syncUrl('/')
+  document.title = 'josebatista.dev'
   await nextTick()
   gridRef.value?.focus({ preventScroll: true })
 }

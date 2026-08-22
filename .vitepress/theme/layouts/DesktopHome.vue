@@ -1,5 +1,6 @@
 <template>
   <main class="desktop" @contextmenu.prevent>
+    <h1 class="sr-only">{{ title }}</h1>
     <div class="desktop-wallpaper"></div>
 
     <TopBar />
@@ -41,8 +42,9 @@ import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
 
-const props = withDefaults(defineProps<{ initialArticle?: string }>(), {
+const props = withDefaults(defineProps<{ initialArticle?: string; title?: string }>(), {
   initialArticle: '',
+  title: 'josebatista.dev',
 })
 
 interface Icon {

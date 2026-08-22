@@ -59,6 +59,9 @@ index.md (layout: false)
 - Windows are `role="dialog"` with `aria-labelledby` (Vue `useId()`) on the title
 - `:focus-visible` outline = 2px solid `var(--primary)` (`.window:focus` exempted)
 - Landmarks: `.desktop` is `<main>`, `.top-bar` is `<header>`; `target="_blank"` links get `rel="noopener noreferrer"` + "opens in new tab" aria-label
+- `DesktopHome` renders a `.sr-only` `<h1>` (default "josebatista.dev"; `PostLayout` passes the post title via the `title` prop) so heading hierarchy starts at level 1
+- `BlogWindow` updates `document.title` on open/back (`{post title} | josebatista.dev`); item count is `aria-live="polite"`; active sidebar row uses `aria-current="true"`
+- Don't add `id="VPContent"` yourself — VitePress owns that id on post pages (skip link targets it)
 - `@media (prefers-reduced-motion: reduce)` collapses all transitions/animations and pins the cursor
 
 ### Blog deep linking

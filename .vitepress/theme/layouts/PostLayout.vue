@@ -1,5 +1,5 @@
 <template>
-  <DesktopHome :initial-article="articleSlug" />
+  <DesktopHome :initial-article="articleSlug" :title="pageTitle" />
 </template>
 
 <script setup lang="ts">
@@ -15,4 +15,6 @@ const articleSlug = computed(() => {
   const file = parts[parts.length - 1] ?? ''
   return file.replace(/\.md$/, '')
 })
+
+const pageTitle = computed(() => page.value?.title || 'josebatista.dev')
 </script>

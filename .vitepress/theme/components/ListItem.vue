@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="ui-button list-item" :class="{ active }" @click="$emit('select')">
+  <button type="button" class="ui-button list-item" :class="{ active }" :aria-current="active ? 'true' : undefined" @click="$emit('select')">
     <span class="list-item-icon" aria-hidden="true">{{ icon }}</span>
     <div class="list-item-info">
       <span class="list-item-title">{{ title }}</span>
