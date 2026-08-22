@@ -40,11 +40,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import MatrixRain from '../components/MatrixRain.vue'
 import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
-import MatrixRain from '../components/MatrixRain.vue'
-import { useI18n } from '../i18n/index'
+import { useI18n, initI18n } from '../i18n/index'
 import { SITE_NAME, WINDOW_TYPES, SECTIONS, type WindowType } from '../constants'
 
 const { t } = useI18n()
@@ -130,6 +130,7 @@ function openWindow(icon: Icon, data?: any) {
 }
 
 onMounted(() => {
+  initI18n()
   if (props.initialArticle) {
     const blog = icons.value.find(i => i.id === SECTIONS.BLOG)
     if (blog) openWindow(blog, { initialArticle: props.initialArticle })

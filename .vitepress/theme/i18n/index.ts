@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import en from './locales/en'
 import pt from './locales/pt'
 import { LOCALE_EN, LOCALE_PT } from '../constants'
@@ -13,7 +13,7 @@ function get(obj: Dict, path: string): any {
   return path.split('.').reduce((acc, key) => (acc == null ? undefined : acc[key]), obj)
 }
 
-function getInitialLocale(): AppLocale {
+function resolvePersistedLocale(): AppLocale {
   if (typeof localStorage !== 'undefined') {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === LOCALE_EN || saved === LOCALE_PT) return saved as AppLocale
@@ -24,7 +24,19 @@ function getInitialLocale(): AppLocale {
   return LOCALE_EN
 }
 
-const state = ref<AppLocale>(getInitialLocale())
+const state = ref<AppLocale>(LOCALE_EN)
+
+function syncLang() {
+  if (typeof document !== 'undefined') document.documentElement.lang = state.value
+}
+
+watch(state, syncLang)
+
+export function initI18n() {
+  const next = resolvePersistedLocale()
+  state.value = next
+  syncLang()
+}
 
 const locales: Record<AppLocale, Dict> = {
   [LOCALE_EN]: en as Dict,
