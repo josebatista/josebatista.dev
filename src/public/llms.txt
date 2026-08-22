@@ -1,0 +1,12 @@
+# josebatista.dev
+
+> A personal developer portfolio presented as an interactive Linux desktop, by José Batista.
+
+josebatista.dev is a developer portfolio styled as a Linux operating-system desktop. It showcases the author's bio, software projects, and contact links, with a focus on development and observability. The site is built with VitePress and Vue 3 and uses a dark, terminal-inspired theme.
+
+## Main Sections
+
+- [Home](https://josebatista.dev/): The interactive desktop entry point.
+- [About](https://josebatista.dev/about/): Biography and background of José Batista.
+- [Projects](https://josebatista.dev/projects/): Software projects with descriptions, languages, and star counts.
+- [Contact](https://josebatista.dev/contact/): Links to reach the author.
