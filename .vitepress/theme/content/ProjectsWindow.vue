@@ -7,7 +7,6 @@
         <p class="project-desc">{{ project.description }}</p>
         <div class="project-meta">
           <span class="project-lang">{{ project.language }}</span>
-          <span class="project-stars">★ {{ project.stars }}</span>
         </div>
       </div>
     </div>
