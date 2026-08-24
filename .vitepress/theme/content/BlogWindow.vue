@@ -36,6 +36,7 @@
         :key="post.url"
         :title="post.title"
         :date="formatDate(post.date)"
+        :cover="post.cover"
         @select="openPost(post)"
       />
     </div>

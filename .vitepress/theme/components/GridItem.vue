@@ -2,7 +2,8 @@
   <button type="button" class="ui-button grid-item" @click="$emit('select')">
     <div class="grid-item-thumb">
       <slot name="thumbnail">
-        <span class="grid-item-icon material-symbols-outlined" aria-hidden="true">{{ icon }}</span>
+        <img v-if="cover" class="grid-item-cover" :src="cover" :alt="title || ''" />
+        <span v-else class="grid-item-icon material-symbols-outlined" aria-hidden="true">{{ icon }}</span>
       </slot>
     </div>
     <div class="grid-item-body">
@@ -19,6 +20,7 @@ withDefaults(defineProps<{
   icon?: string
   title?: string
   date?: string
+  cover?: string
 }>(), {
   icon: 'description',
 })

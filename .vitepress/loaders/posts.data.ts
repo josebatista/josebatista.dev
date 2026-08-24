@@ -34,6 +34,7 @@ export default createContentLoader([`${SECTIONS.POSTS}/**/*.md`, `${LOCALE_PT}/$
         tags: page.frontmatter.tags || [],
         description: page.frontmatter.description || '',
         description_pt: pt.description || '',
+        cover: (page.frontmatter.cover as string) || '',
         html_en: page.html || '',
         html_pt: ptHtml.get(slug) || '',
       }
