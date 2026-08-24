@@ -31,3 +31,10 @@ export const SYSINFO = {
   terminal: 'zsh | utf-8 | josebatista@os-v1.0',
   sync: 'SYNC: OK | v1.0.4-STABLE',
 }
+
+export const GISCUS = {
+  repo: 'josebatista/josebatista.dev',
+  repoId: 'R_kgDOUAg-1Q',
+  category: 'Announcements',
+  categoryId: 'DIC_kwDOUAg-1c4DEGRi',
+} as const

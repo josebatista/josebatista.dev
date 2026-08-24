@@ -88,6 +88,7 @@
 
       <div ref="articleRef" tabindex="-1" class="blog-article" v-if="selectedPost">
         <article v-html="activePost?.html"></article>
+        <GiscusComments :key="activePost?.url" />
         <div class="eof-marker">
           <span>[{{ t('eof') }}]</span>
           <span class="cursor-blink">█</span>
@@ -105,6 +106,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import GridItem from '../components/GridItem.vue'
+import GiscusComments from '../components/GiscusComments.vue'
 import ListItem from '../components/ListItem.vue'
 import { data as rawPosts } from '../../loaders/posts.data.js'
 import { useI18n } from '../i18n/index'

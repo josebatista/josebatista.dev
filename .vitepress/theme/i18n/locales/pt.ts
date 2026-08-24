@@ -27,6 +27,7 @@ export default {
   blog: {
     search: 'Buscar posts...',
     back: 'Voltar aos posts',
+    comments: 'Comentários',
     crumb: {
       document: 'documentos',
       blog: 'blog',

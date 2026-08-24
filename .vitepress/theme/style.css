@@ -971,6 +971,23 @@ html, body {
   font-size: 18px;
 }
 
+.giscus-comments {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(var(--scrim-rgb), 0.1);
+}
+
+.giscus-heading {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: var(--on-surface);
+}
+
+.giscus,
+.giscus-frame {
+  width: 100%;
+}
+
 .blog-article article p {
   margin-bottom: 1em;
 }
