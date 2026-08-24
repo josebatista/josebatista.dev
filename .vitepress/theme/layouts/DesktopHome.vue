@@ -46,9 +46,11 @@ import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
 import { useI18n, initI18n } from '../i18n/index'
+import { useIsMobile } from '../composables/useIsMobile'
 import { SITE_NAME, WINDOW_TYPES, SECTIONS, type WindowType } from '../constants'
 
 const { t } = useI18n()
+const { isPhone } = useIsMobile()
 const { page, site } = useData()
 
 const props = withDefaults(defineProps<{ initialArticle?: string; title?: string }>(), {
@@ -114,17 +116,26 @@ function openWindow(icon: Icon, data?: any) {
 
   const pos = positions[icon.id] || { x: 200, y: 100, width: 720, height: 540 }
 
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1280
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+  const MARGIN = 12
+  const TOP_BAR = 36
+  const winW = Math.min(pos.width, vw - MARGIN * 2)
+  const winH = Math.min(pos.height, vh - TOP_BAR - MARGIN * 2)
+  const winX = Math.max(MARGIN, Math.min(pos.x, vw - winW - MARGIN))
+  const winY = Math.max(TOP_BAR, Math.min(pos.y, vh - winH - MARGIN))
+
   windows.value.push({
     id: icon.id,
     titleKey: icon.key ?? icon.label,
     type: icon.type,
     icon: icon.icon,
-    x: pos.x,
-    y: pos.y,
-    width: pos.width,
-    height: pos.height,
+    x: winX,
+    y: winY,
+    width: winW,
+    height: winH,
     minimized: false,
-    maximized: false,
+    maximized: isPhone.value,
     zIndex: nextZ++,
     data,
     trigger:

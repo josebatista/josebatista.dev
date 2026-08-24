@@ -8,17 +8,17 @@
     role="dialog"
     :aria-labelledby="titleId"
     tabindex="-1"
-    @mousedown="$emit('focus')"
+    @pointerdown="$emit('focus')"
     @keydown.esc="handleClose"
   >
     <div
       class="window-titlebar"
-      @mousedown.prevent="startDrag"
+      @pointerdown.prevent="startDrag"
       @dblclick.prevent="onTitlebarDblclick"
     >
       <div class="window-controls" @dblclick.stop>
         <button class="dot dot-red" @click.stop="handleClose" :title="t('window.close')" :aria-label="t('window.close')"><span class="dot-icon" aria-hidden="true">✕</span></button>
-        <button class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? t('window.restore') : t('window.maximize')" :aria-label="maximized ? t('window.restore') : t('window.maximize')"><span class="dot-icon" aria-hidden="true">{{ maximized ? '⧉' : '□' }}</span></button>
+        <button v-if="!isPhone" class="dot dot-yellow" @click.stop="$emit('toggle-maximize')" :title="maximized ? t('window.restore') : t('window.maximize')" :aria-label="maximized ? t('window.restore') : t('window.maximize')"><span class="dot-icon" aria-hidden="true">{{ maximized ? '⧉' : '□' }}</span></button>
       </div>
       <span class="window-title" :id="titleId">{{ t(titleKey) }}</span>
       <div class="window-spacer"></div>
@@ -33,7 +33,7 @@
     <div
       v-if="!maximized"
       class="window-resizer"
-      @mousedown.stop.prevent="startResize"
+      @pointerdown.stop.prevent="startResize"
       :title="t('window.resize')"
     ></div>
   </div>
@@ -47,9 +47,11 @@ import ProjectsWindow from '../content/ProjectsWindow.vue'
 import ContactWindow from '../content/ContactWindow.vue'
 import NotFoundWindow from '../content/NotFoundWindow.vue'
 import { useI18n } from '../i18n/index'
+import { useIsMobile } from '../composables/useIsMobile'
 import { WINDOW_TYPES } from '../constants'
 
 const { t } = useI18n()
+const { isPhone } = useIsMobile()
 
 const props = defineProps<{
   titleKey: string
@@ -95,10 +97,11 @@ const dragOffset = { x: 0, y: 0 }
 let lastTitlebarClick = 0
 
 function onTitlebarDblclick() {
+  if (isPhone.value) return
   emit('toggle-maximize')
 }
 
-function startDrag(e: MouseEvent) {
+function startDrag(e: PointerEvent) {
   if (props.maximized) return
   const now = Date.now()
   if (now - lastTitlebarClick < 400) {
@@ -110,7 +113,7 @@ function startDrag(e: MouseEvent) {
   dragOffset.x = e.clientX - x.value
   dragOffset.y = e.clientY - y.value
 
-  function onMove(ev: MouseEvent) {
+  function onMove(ev: PointerEvent) {
     if (!isDragging.value) return
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
@@ -120,19 +123,19 @@ function startDrag(e: MouseEvent) {
 
   function onUp() {
     isDragging.value = false
-    document.removeEventListener('mousemove', onMove)
-    document.removeEventListener('mouseup', onUp)
+    document.removeEventListener('pointermove', onMove)
+    document.removeEventListener('pointerup', onUp)
   }
 
-  document.addEventListener('mousemove', onMove)
-  document.addEventListener('mouseup', onUp)
+  document.addEventListener('pointermove', onMove)
+  document.addEventListener('pointerup', onUp)
 }
 
 const isResizing = ref(false)
 const MIN_WIDTH = 320
 const MIN_HEIGHT = 240
 
-function startResize(e: MouseEvent) {
+function startResize(e: PointerEvent) {
   if (props.maximized) return
   emit('focus')
   isResizing.value = true
@@ -141,7 +144,7 @@ function startResize(e: MouseEvent) {
   const startWidth = width.value
   const startHeight = height.value
 
-  function onMove(ev: MouseEvent) {
+  function onMove(ev: PointerEvent) {
     if (!isResizing.value) return
     width.value = Math.max(MIN_WIDTH, startWidth + (ev.clientX - startX))
     height.value = Math.max(MIN_HEIGHT, startHeight + (ev.clientY - startY))
@@ -149,12 +152,12 @@ function startResize(e: MouseEvent) {
 
   function onUp() {
     isResizing.value = false
-    document.removeEventListener('mousemove', onMove)
-    document.removeEventListener('mouseup', onUp)
+    document.removeEventListener('pointermove', onMove)
+    document.removeEventListener('pointerup', onUp)
   }
 
-  document.addEventListener('mousemove', onMove)
-  document.addEventListener('mouseup', onUp)
+  document.addEventListener('pointermove', onMove)
+  document.addEventListener('pointerup', onUp)
 }
 
 const TOP_BAR_HEIGHT = 36

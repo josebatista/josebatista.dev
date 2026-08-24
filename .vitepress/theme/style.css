@@ -326,6 +326,7 @@ html, body {
   height: 16px;
   cursor: nwse-resize;
   z-index: 1;
+  touch-action: none;
 }
 
 .window-resizer::after {
@@ -365,6 +366,7 @@ html, body {
   flex-shrink: 0;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: none;
 }
 
 .window-controls {
