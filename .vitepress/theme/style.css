@@ -1223,3 +1223,8 @@ html, body {
   color: var(--on-surface-variant);
   border: 1px solid var(--primary);
 }
+
+[data-theme="light"] .project-card {
+  background: var(--surface-container);
+  border-color: var(--outline-variant);
+}
