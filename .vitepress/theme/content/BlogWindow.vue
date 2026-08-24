@@ -126,6 +126,7 @@ const posts = computed(() =>
     ...p,
     title: isPT.value && p.title_pt ? p.title_pt : p.title,
     description: isPT.value && p.description_pt ? p.description_pt : p.description,
+    cover: isPT.value && p.cover_pt ? p.cover_pt : p.cover,
   }))
 )
 
