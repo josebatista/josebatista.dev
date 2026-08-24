@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, useId } from 'vue'
+import { ref, computed, onMounted, onUnmounted, useId } from 'vue'
 import AboutWindow from '../content/AboutWindow.vue'
 import BlogWindow from '../content/BlogWindow.vue'
 import ProjectsWindow from '../content/ProjectsWindow.vue'
@@ -78,9 +78,25 @@ const closing = ref(false)
 const titleId = useId()
 const windowRef = ref<HTMLElement | null>(null)
 
+function clampToViewport() {
+  if (props.maximized) return
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const M = 12
+  width.value = Math.min(Math.max(width.value, MIN_WIDTH), vw - M * 2)
+  height.value = Math.min(Math.max(height.value, MIN_HEIGHT), vh - TOP_BAR_HEIGHT - M * 2)
+  x.value = Math.min(Math.max(x.value, M), vw - width.value - M)
+  y.value = Math.min(Math.max(y.value, TOP_BAR_HEIGHT), vh - height.value - M)
+}
+
 onMounted(() => {
   requestAnimationFrame(() => { opening.value = false })
   windowRef.value?.focus({ preventScroll: true })
+  window.addEventListener('resize', clampToViewport)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', clampToViewport)
 })
 
 function handleClose() {

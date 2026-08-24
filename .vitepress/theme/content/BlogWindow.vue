@@ -1,6 +1,6 @@
 <template>
   <div class="blog-window">
-    <div class="blog-toolbar">
+    <div class="blog-toolbar" :class="isGridView ? 'view-grid' : 'view-article'">
       <template v-if="isGridView">
         <div class="toolbar-breadcrumb">
           <span class="crumb">~</span>

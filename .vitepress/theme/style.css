@@ -294,6 +294,18 @@ html, body {
   line-height: 1.3;
 }
 
+@media (max-height: 480px) {
+  .desktop-icons {
+    top: 48px;
+    gap: 6px;
+    max-height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+  .desktop-icon { padding: 6px 10px; }
+  .icon-box { width: 40px; height: 40px; font-size: 18px; }
+  .icon-label { font-size: 10px; }
+}
+
 /* ─── Window ─── */
 .window {
   position: absolute;
@@ -724,6 +736,12 @@ html, body {
   min-height: 0;
   padding-right: 12px;
   border-right: 1px solid rgba(var(--scrim-rgb), 0.06);
+}
+
+@media (max-width: 768px) {
+  .blog-sidebar { display: none; }
+  .blog-article { padding-left: 16px; padding-right: 12px; }
+  .blog-toolbar.view-article .toolbar-search { display: none; }
 }
 
 .sidebar-directory {
