@@ -992,6 +992,41 @@ html, body {
   margin-bottom: 1em;
 }
 
+/* VitePress custom blocks sit outside the default .vp-doc shell here, so
+   they need theme-native colors and spacing in the blog article. */
+.blog-article article .custom-block {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.blog-article article .custom-block p {
+  margin: 0;
+}
+
+.blog-article article .custom-block p + p {
+  margin-top: 8px;
+}
+
+.blog-article article .custom-block-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.blog-article article .custom-block.warning {
+  border-color: rgba(251, 191, 36, 0.55);
+  background: rgba(120, 83, 8, 0.3);
+  color: #f7edd1;
+}
+
+.blog-article article .custom-block.warning .custom-block-title {
+  color: #fcd34d;
+}
+
 .blog-article article code {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
@@ -1242,6 +1277,16 @@ html, body {
 [data-theme="light"] .blog-article article code {
   background: rgba(var(--shadow-rgb), 0.06);
   color: var(--secondary);
+}
+
+[data-theme="light"] .blog-article article .custom-block.warning {
+  border-color: #d9aa22;
+  background: #fff8e1;
+  color: #443b1c;
+}
+
+[data-theme="light"] .blog-article article .custom-block.warning .custom-block-title {
+  color: #705300;
 }
 
 /* The block background remains dark in light mode, unlike inline code. */
