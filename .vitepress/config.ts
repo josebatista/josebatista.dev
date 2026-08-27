@@ -22,7 +22,12 @@ export default defineConfig({
             .replace(/>/g, '&gt;')
           return `<div class="mermaid">${code}</div>\n`
         }
+        // VitePress 1.6 always injects copy/language controls around Shiki
+        // fences. This site supplies its own code-block UI, so remove that
+        // wrapper instead of leaving invisible controls in the document flow.
         return fence(tokens, idx, options, env, self)
+          .replace(/^<div class="language-[^"]*"><button\b[^>]*><\/button><span class="lang">[^<]*<\/span>/, '')
+          .replace(/<\/div>\n?$/, '')
       }
     },
   },

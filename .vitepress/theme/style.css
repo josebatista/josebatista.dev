@@ -1244,6 +1244,12 @@ html, body {
   color: var(--secondary);
 }
 
+/* The block background remains dark in light mode, unlike inline code. */
+[data-theme="light"] .blog-article article pre code {
+  background: none;
+  color: #d8dee9;
+}
+
 /* Light-mode contrast fixes (dark passes as-is) */
 [data-theme="light"] .list-item-date {
   color: var(--on-surface-variant);
