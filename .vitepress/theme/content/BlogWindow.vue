@@ -156,6 +156,71 @@ const allTags = computed(() => {
   return Array.from(tags)
 })
 
+let mermaidLib: Promise<any> | null = null
+const mermaidSources = new Map<HTMLElement, string>()
+let themeObserver: MutationObserver | null = null
+
+function cssVar(name: string, fallback: string): string {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return v || fallback
+}
+
+async function renderDiagrams() {
+  const root = articleRef.value
+  if (!root) return
+  const nodes = Array.from(root.querySelectorAll<HTMLElement>('.mermaid'))
+  if (!nodes.length) return
+  if (!mermaidLib) mermaidLib = import('mermaid').then((m) => m.default)
+  const mermaid = await mermaidLib
+  // Wait for web fonts so Mermaid measures label size correctly.
+  // Without this, nodes are sized against a fallback font and the
+  // wrapped text gets clipped (e.g. "compartilhar" -> "comparti").
+  if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready } catch (e) { /* ignore */ }
+  }
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    securityLevel: 'loose',
+    themeVariables: {
+      primaryColor: cssVar('--surface-container', '#20201f'),
+      primaryTextColor: cssVar('--on-surface', '#e5e2e1'),
+      primaryBorderColor: cssVar('--primary', '#00ff41'),
+      lineColor: cssVar('--secondary', '#3584e4'),
+      secondaryColor: cssVar('--surface-container-high', '#2a2a2a'),
+      tertiaryColor: cssVar('--surface-container-highest', '#353535'),
+      background: 'transparent',
+      fontFamily: 'monospace',
+    },
+  })
+  mermaidSources.clear()
+  nodes.forEach((n) => mermaidSources.set(n, n.textContent || ''))
+  mermaid.run({ nodes })
+}
+
+function recolorDiagrams() {
+  if (!selectedPost.value) return
+  const nodes = Array.from(mermaidSources.keys())
+  if (!nodes.length) return
+  nodes.forEach((node) => {
+    const src = mermaidSources.get(node)
+    if (src == null) return
+    const fresh = document.createElement('div')
+    fresh.className = 'mermaid'
+    fresh.textContent = src
+    node.replaceWith(fresh)
+    mermaidSources.set(fresh, src)
+    mermaidSources.delete(node)
+  })
+  renderDiagrams()
+}
+
+function setupThemeObserver() {
+  if (themeObserver) return
+  themeObserver = new MutationObserver(() => recolorDiagrams())
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+}
+
 function formatDate(value: string): string {
   const d = new Date(value)
   if (isNaN(d.getTime())) return value
@@ -202,7 +267,17 @@ watch(
   { flush: 'post' }
 )
 
+watch(
+  [() => activePost.value?.html, isGridView],
+  async () => {
+    if (isGridView.value) return
+    await nextTick()
+    renderDiagrams()
+  }
+)
+
 onMounted(() => {
+  setupThemeObserver()
   if (props.initialArticle) {
     const post = rawPosts.find((p) => p.url.endsWith(`/${props.initialArticle}`))
     if (post) {

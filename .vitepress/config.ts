@@ -10,6 +10,21 @@ export default defineConfig({
   appearance: false,
   markdown: {
     theme: 'github-dark',
+    config(md) {
+      const fence = md.renderer.rules.fence!
+      md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+        const token = tokens[idx]
+        const info = token.info.trim().split(/\s+/)[0]
+        if (info === 'mermaid') {
+          const code = token.content
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+          return `<div class="mermaid">${code}</div>\n`
+        }
+        return fence(tokens, idx, options, env, self)
+      }
+    },
   },
   sitemap: {
     hostname: `https://${SITE_NAME}`,

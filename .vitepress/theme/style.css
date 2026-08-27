@@ -1259,3 +1259,13 @@ html, body {
   background: var(--surface-container);
   border-color: var(--outline-variant);
 }
+
+.blog-article .mermaid {
+  margin: 1.25rem 0;
+  text-align: center;
+}
+
+.blog-article .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
