@@ -47,10 +47,10 @@
           <div class="sidebar-label">{{ t('sidebar.directory') }}</div>
           <ListItem
             v-for="post in filteredPosts"
-            :key="post.url"
+            :key="post.slug"
             :title="post.title"
             :description="post.description"
-            :active="selectedPost?.url === post.url"
+            :active="selectedPost?.slug === post.slug"
             @select="openPost(post)"
           >
             <template #meta>
