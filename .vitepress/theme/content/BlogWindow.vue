@@ -110,7 +110,7 @@ import GiscusComments from '../components/GiscusComments.vue'
 import ListItem from '../components/ListItem.vue'
 import { data as rawPosts } from '../../loaders/posts.data.js'
 import { useI18n } from '../i18n/index'
-import { SITE_NAME, SYSINFO, LOCALE_EN, LOCALE_PT, SECTIONS } from '../constants'
+import { SITE_NAME, SYSINFO, LOCALE_EN, LOCALE_PT, PREFIX_EN, PREFIX_PT } from '../constants'
 
 const { t, isPT } = useI18n()
 
@@ -235,7 +235,7 @@ function formatDate(value: string): string {
 async function openPost(post: (typeof rawPosts)[number]) {
   selectedPost.value = post
   isGridView.value = false
-  syncUrl(post.url)
+  syncUrl(isPT.value ? post.url_pt : post.url_en)
   await nextTick()
   if (articleRef.value) articleRef.value.scrollTop = 0
   articleRef.value?.focus({ preventScroll: true })
@@ -243,17 +243,13 @@ async function openPost(post: (typeof rawPosts)[number]) {
 
 async function backToGrid() {
   isGridView.value = true
-  syncUrl('/')
+  syncUrl(isPT.value ? `/${PREFIX_PT}/` : `/${PREFIX_EN}/`)
   await nextTick()
   gridRef.value?.focus({ preventScroll: true })
 }
 
 function syncUrl(url: string) {
-  if (url.startsWith(`/${SECTIONS.POSTS}/`)) {
-    window.history.replaceState({}, '', url)
-  } else {
-    window.history.replaceState({}, '', '/')
-  }
+  window.history.replaceState({}, '', url)
 }
 
 watch(
@@ -280,7 +276,7 @@ watch(
 onMounted(() => {
   setupThemeObserver()
   if (props.initialArticle) {
-    const post = rawPosts.find((p) => p.url.endsWith(`/${props.initialArticle}`))
+    const post = rawPosts.find((p) => p.slug === props.initialArticle)
     if (post) {
       selectedPost.value = post
       isGridView.value = false

@@ -3,6 +3,9 @@ export const SITE_NAME = 'josebatista.dev'
 export const LOCALE_EN = 'en-US'
 export const LOCALE_PT = 'pt-BR'
 
+export const PREFIX_EN = 'en'
+export const PREFIX_PT = 'pt'
+
 export const WINDOW_TYPES = {
   TERMINAL: 'terminal',
   BLOG: 'blog',

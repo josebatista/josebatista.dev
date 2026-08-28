@@ -45,11 +45,11 @@ import MatrixRain from '../components/MatrixRain.vue'
 import TopBar from '../components/TopBar.vue'
 import Window from '../components/Window.vue'
 import DesktopIcon from '../components/DesktopIcon.vue'
-import { useI18n, initI18n } from '../i18n/index'
+import { useI18n } from '../i18n/index'
 import { useIsMobile } from '../composables/useIsMobile'
-import { SITE_NAME, WINDOW_TYPES, SECTIONS, type WindowType } from '../constants'
+import { SITE_NAME, WINDOW_TYPES, SECTIONS, PREFIX_EN, PREFIX_PT, type WindowType } from '../constants'
 
-const { t } = useI18n()
+const { t, isPT } = useI18n()
 const { isPhone } = useIsMobile()
 const { page, site } = useData()
 
@@ -159,13 +159,13 @@ function openNotFoundWindow() {
   // Clean the invalid path from the URL bar without triggering a route
   // change (VitePress only reacts to click/popstate, not replaceState), so
   // the 404 window stays open on the desktop.
-  if (typeof window !== 'undefined' && window.location.pathname !== '/') {
-    history.replaceState(null, '', site.value?.base || '/')
+  if (typeof window !== 'undefined') {
+    const home = isPT.value ? `/${PREFIX_PT}/` : `/${PREFIX_EN}/`
+    history.replaceState(null, '', home)
   }
 }
 
 onMounted(() => {
-  initI18n()
   if (props.initialArticle) {
     const blog = icons.value.find(i => i.id === SECTIONS.BLOG)
     if (blog) openWindow(blog, { initialArticle: props.initialArticle })

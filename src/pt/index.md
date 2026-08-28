@@ -2,4 +2,4 @@
 layout: false
 ---
 
-<RootRedirect />
+<DesktopHome />

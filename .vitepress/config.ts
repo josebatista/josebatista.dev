@@ -1,12 +1,21 @@
 import { defineConfig } from 'vitepress'
-import { SITE_NAME, LOCALE_PT } from './theme/constants'
+import { SITE_NAME, LOCALE_EN, LOCALE_PT, PREFIX_EN, PREFIX_PT } from './theme/constants'
 
 export default defineConfig({
   title: SITE_NAME,
   description: 'Linux OS Portfolio',
   srcDir: 'src',
   cleanUrls: true,
-  srcExclude: [`**/${LOCALE_PT}/**`],
+  locales: {
+    [PREFIX_EN]: {
+      label: 'English',
+      lang: LOCALE_EN,
+    },
+    [PREFIX_PT]: {
+      label: 'Português',
+      lang: LOCALE_PT,
+    },
+  },
   appearance: false,
   markdown: {
     theme: 'github-dark',
