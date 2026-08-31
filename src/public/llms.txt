@@ -2,11 +2,32 @@
 
 > A personal developer portfolio presented as an interactive Linux desktop, by José Batista.
 
-josebatista.dev is a developer portfolio styled as a Linux operating-system desktop. It showcases the author's bio, software projects, and contact links, with a focus on development and observability. The site is built with VitePress and Vue 3 and uses a dark, terminal-inspired theme.
+josebatista.dev is a developer portfolio styled as a Linux operating-system desktop. It showcases the author's bio, software projects, technical writing, and contact links, with a focus on software engineering, data processing, streaming, and observability. The site is built with VitePress and Vue 3 and uses a dark, terminal-inspired theme. Content is available in English and Brazilian Portuguese.
+
+## Languages
+
+- [English](https://josebatista.dev/en/): English version of the site.
+- [Português](https://josebatista.dev/pt/): Brazilian Portuguese version of the site.
 
 ## Main Sections
 
-- [Home](https://josebatista.dev/): The interactive desktop entry point.
-- [About](https://josebatista.dev/about/): Biography and background of José Batista.
-- [Projects](https://josebatista.dev/projects/): Software projects with descriptions, languages, and star counts.
-- [Contact](https://josebatista.dev/contact/): Links to reach the author.
+- [Home — English](https://josebatista.dev/en/): The interactive desktop entry point in English.
+- [Início — Português](https://josebatista.dev/pt/): The interactive desktop entry point in Portuguese.
+- [About — English](https://josebatista.dev/en/about): Biography and background of José Batista.
+- [Sobre — Português](https://josebatista.dev/pt/about): Biografia e trajetória de José Batista.
+- [Projects — English](https://josebatista.dev/en/projects): Software projects with descriptions, languages, and star counts.
+- [Projetos — Português](https://josebatista.dev/pt/projects): Projetos de software com descrições, linguagens e número de estrelas.
+- [Contact — English](https://josebatista.dev/en/contact): Links to reach the author.
+- [Contato — Português](https://josebatista.dev/pt/contact): Links para entrar em contato com o autor.
+
+## Blog Posts — English
+
+- [A five-minute error alert isn't just a counter](https://josebatista.dev/en/posts/flink101-02): Tracking a service's errors in real time helps explain state and windows without starting with an API.
+- [When data never ends: why streaming is different from batch](https://josebatista.dev/en/posts/flink101-01): A first step toward understanding the problem that tools like Apache Flink solve.
+- [Hello, world!](https://josebatista.dev/en/posts/hello-world): An introduction to the blog, the work behind it, and the topics the author plans to explore.
+
+## Posts do blog — Português
+
+- [Um alerta de erros em cinco minutos não é só um contador](https://josebatista.dev/pt/posts/flink101-02): Acompanhar erros de um serviço em tempo real ajuda a entender state e janelas sem começar por uma API.
+- [Quando os dados não acabam: por que streaming é diferente de batch](https://josebatista.dev/pt/posts/flink101-01): Um primeiro passo para entender o problema que ferramentas como o Apache Flink resolvem.
+- [Olá, mundo!](https://josebatista.dev/pt/posts/hello-world): Uma apresentação do blog, do trabalho por trás dele e dos assuntos que o autor pretende explorar.
