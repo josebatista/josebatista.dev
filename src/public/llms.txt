@@ -22,12 +22,14 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Blog Posts — English
 
+- [What happens to an alert when the machine calculating it goes down?](https://josebatista.dev/en/posts/flink101-03): An example using streaming logs to understand work distribution, checkpoints, and out-of-order events.
 - [A five-minute error alert isn't just a counter](https://josebatista.dev/en/posts/flink101-02): Tracking a service's errors in real time helps explain state and windows without starting with an API.
 - [When data never ends: why streaming is different from batch](https://josebatista.dev/en/posts/flink101-01): A first step toward understanding the problem that tools like Apache Flink solve.
 - [Hello, world!](https://josebatista.dev/en/posts/hello-world): An introduction to the blog, the work behind it, and the topics the author plans to explore.
 
 ## Posts do blog — Português
 
+- [O que acontece com um alerta quando a máquina que o calcula cai?](https://josebatista.dev/pt/posts/flink101-03): Um exemplo de logs em streaming para entender divisão de trabalho, checkpoints e eventos fora de ordem.
 - [Um alerta de erros em cinco minutos não é só um contador](https://josebatista.dev/pt/posts/flink101-02): Acompanhar erros de um serviço em tempo real ajuda a entender state e janelas sem começar por uma API.
 - [Quando os dados não acabam: por que streaming é diferente de batch](https://josebatista.dev/pt/posts/flink101-01): Um primeiro passo para entender o problema que ferramentas como o Apache Flink resolvem.
 - [Olá, mundo!](https://josebatista.dev/pt/posts/hello-world): Uma apresentação do blog, do trabalho por trás dele e dos assuntos que o autor pretende explorar.
