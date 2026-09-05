@@ -253,9 +253,9 @@ function syncUrl(url: string) {
 }
 
 watch(
-  [selectedPost, isPT],
+  [selectedPost, isPT, isGridView],
   () => {
-    if (selectedPost.value) {
+    if (selectedPost.value && !isGridView.value) {
       document.title = `${activePost.value?.title} | ${SITE_NAME}`
     } else {
       document.title = SITE_NAME

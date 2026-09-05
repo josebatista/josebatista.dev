@@ -1,6 +1,18 @@
 import { defineConfig } from 'vitepress'
 import { SITE_NAME, LOCALE_EN, LOCALE_PT, PREFIX_EN, PREFIX_PT } from './theme/constants'
 
+const themeInitScript = `(() => {
+  try {
+    const saved = localStorage.getItem('josebatista-theme')
+    const theme = saved === 'dark' || saved === 'light'
+      ? saved
+      : matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    document.documentElement.setAttribute('data-theme', theme)
+  } catch (_) {
+    document.documentElement.setAttribute('data-theme', 'dark')
+  }
+})()`
+
 export default defineConfig({
   title: SITE_NAME,
   description: 'Linux OS Portfolio',
@@ -44,6 +56,7 @@ export default defineConfig({
     hostname: `https://${SITE_NAME}`,
   },
   head: [
+    ['script', {}, themeInitScript],
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
   ],
   themeConfig: {}

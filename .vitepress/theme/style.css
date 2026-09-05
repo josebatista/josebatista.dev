@@ -77,9 +77,13 @@ html, body {
   font-style: normal;
   font-size: 24px;
   line-height: 1;
+  inline-size: 1em;
+  min-inline-size: 1em;
   letter-spacing: normal;
   text-transform: none;
   display: inline-block;
+  overflow: hidden;
+  text-align: center;
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
@@ -191,8 +195,14 @@ html, body {
 }
 
 .clock {
+  display: inline-block;
+  flex: 0 0 16ch;
+  inline-size: 16ch;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
   color: var(--on-surface-variant);
 }
 
@@ -239,6 +249,21 @@ html, body {
 .theme-switch .material-symbols-outlined {
   font-size: 18px;
   line-height: 1;
+}
+
+@media (max-width: 360px) {
+  .top-bar {
+    padding-inline: 8px;
+  }
+
+  .top-bar-right {
+    gap: 6px;
+  }
+
+  .lang-switch,
+  .theme-switch {
+    padding-inline: 6px;
+  }
 }
 
 /* ─── Desktop Icons ─── */

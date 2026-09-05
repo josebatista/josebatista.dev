@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from '../i18n/index'
-import { useTheme } from '../theme/index'
+import { initTheme, useTheme } from '../theme/index'
 import { SITE_NAME, LOCALE_EN } from '../constants'
 import CountryFlag from './CountryFlag.vue'
 
@@ -49,6 +49,7 @@ function updateClock() {
 
 let timer: number
 onMounted(() => {
+  initTheme()
   updateClock()
   timer = window.setInterval(updateClock, 10000)
 })
