@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 // Phones get the mobile layout (forced maximized, no maximize button) below
 // this viewport width. This is width-based (not pointer-based) on purpose:
@@ -15,11 +15,16 @@ function apply() {
 }
 
 export function useIsMobile() {
-  if (typeof window !== 'undefined' && !bound) {
-    mql = window.matchMedia(QUERY)
+  // Keep SSR and the client's first render identical. The media query is
+  // applied after hydration, before responsive window state is adjusted.
+  onMounted(() => {
+    if (typeof window === 'undefined') return
+    if (!mql) mql = window.matchMedia(QUERY)
     apply()
-    mql.addEventListener('change', apply)
-    bound = true
-  }
+    if (!bound) {
+      mql.addEventListener('change', apply)
+      bound = true
+    }
+  })
   return { isPhone }
 }

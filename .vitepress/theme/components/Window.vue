@@ -64,6 +64,7 @@ const props = defineProps<{
   initialHeight: number
   minimized: boolean
   maximized: boolean
+  animateOpening: boolean
   data?: any
 }>()
 
@@ -73,7 +74,7 @@ const emit = defineEmits<{
   'toggle-maximize': []
 }>()
 
-const opening = ref(true)
+const opening = ref(props.animateOpening)
 const closing = ref(false)
 const titleId = useId()
 const windowRef = ref<HTMLElement | null>(null)
@@ -90,7 +91,7 @@ function clampToViewport() {
 }
 
 onMounted(() => {
-  requestAnimationFrame(() => { opening.value = false })
+  if (opening.value) requestAnimationFrame(() => { opening.value = false })
   windowRef.value?.focus({ preventScroll: true })
   window.addEventListener('resize', clampToViewport)
 })

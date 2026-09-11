@@ -2,7 +2,7 @@
   <main class="desktop" @contextmenu.prevent>
     <h1 class="sr-only">{{ title }}</h1>
     <div class="desktop-wallpaper">
-      <MatrixRain />
+      <MatrixRain :paused="hasMaximizedWindow" />
     </div>
 
     <TopBar />
@@ -29,11 +29,15 @@
       :initial-height="win.height"
       :minimized="win.minimized"
       :maximized="win.maximized"
+      :animate-opening="win.animateOpening"
       :data="win.data"
       @close="closeWindow(win.id)"
       @focus="focusWindow(win.id)"
       @toggle-maximize="toggleMaximize(win.id)"
-      :class="{ 'window-focused': win.id === activeWindow }"
+      :class="{
+        'window-focused': win.id === activeWindow,
+        'window-initial': !win.animateOpening,
+      }"
     />
   </main>
 </template>
@@ -77,6 +81,7 @@ interface AppWindow {
   height: number
   minimized: boolean
   maximized: boolean
+  animateOpening: boolean
   zIndex: number
   data?: any
   trigger?: HTMLElement | null
@@ -93,9 +98,45 @@ const icons = computed(() =>
   iconDefs.map((d) => ({ ...d, label: t(d.key) }))
 )
 
-const windows = ref<AppWindow[]>([])
-const activeWindow = ref<string | null>(null)
-let nextZ = 1
+const positions: Record<string, { x: number; y: number; width: number; height: number }> = {
+  [SECTIONS.ABOUT]: { x: 300, y: 100, width: 720, height: 540 },
+  [SECTIONS.BLOG]: { x: 200, y: 80, width: 960, height: 640 },
+  [SECTIONS.PROJECTS]: { x: 250, y: 120, width: 720, height: 500 },
+  [SECTIONS.CONTACT]: { x: 350, y: 150, width: 640, height: 480 },
+  [SECTIONS.NOT_FOUND]: { x: 320, y: 140, width: 560, height: 380 },
+}
+
+function initialBlogWindow(): AppWindow[] {
+  if (!props.initialArticle) return []
+  const icon = iconDefs.find((item) => item.id === SECTIONS.BLOG)!
+  const pos = positions[SECTIONS.BLOG]
+  return [{
+    id: icon.id,
+    titleKey: icon.key,
+    type: icon.type,
+    icon: icon.icon,
+    x: pos.x,
+    y: pos.y,
+    width: pos.width,
+    height: pos.height,
+    minimized: false,
+    // Keep the server and the client's first render identical. Phones are
+    // maximized after hydration, once matchMedia is available.
+    maximized: false,
+    animateOpening: false,
+    zIndex: 1,
+    data: { initialArticle: props.initialArticle },
+    trigger: null,
+  }]
+}
+
+const seededWindows = initialBlogWindow()
+const windows = ref<AppWindow[]>(seededWindows)
+const activeWindow = ref<string | null>(seededWindows[0]?.id ?? null)
+const hasMaximizedWindow = computed(() =>
+  windows.value.some((win) => !win.minimized && win.maximized),
+)
+let nextZ = seededWindows.length + 1
 
 function openWindow(icon: Icon, data?: any) {
   const existing = windows.value.find(w => w.id === icon.id)
@@ -104,14 +145,6 @@ function openWindow(icon: Icon, data?: any) {
     existing.data = data
     focusWindow(icon.id)
     return
-  }
-
-  const positions: Record<string, { x: number; y: number; width: number; height: number }> = {
-    [SECTIONS.ABOUT]: { x: 300, y: 100, width: 720, height: 540 },
-    [SECTIONS.BLOG]: { x: 200, y: 80, width: 960, height: 640 },
-    [SECTIONS.PROJECTS]: { x: 250, y: 120, width: 720, height: 500 },
-    [SECTIONS.CONTACT]: { x: 350, y: 150, width: 640, height: 480 },
-    [SECTIONS.NOT_FOUND]: { x: 320, y: 140, width: 560, height: 380 },
   }
 
   const pos = positions[icon.id] || { x: 200, y: 100, width: 720, height: 540 }
@@ -136,6 +169,7 @@ function openWindow(icon: Icon, data?: any) {
     height: winH,
     minimized: false,
     maximized: isPhone.value,
+    animateOpening: true,
     zIndex: nextZ++,
     data,
     trigger:
@@ -167,8 +201,8 @@ function openNotFoundWindow() {
 
 onMounted(() => {
   if (props.initialArticle) {
-    const blog = icons.value.find(i => i.id === SECTIONS.BLOG)
-    if (blog) openWindow(blog, { initialArticle: props.initialArticle })
+    const blog = windows.value.find((win) => win.id === SECTIONS.BLOG)
+    if (blog) blog.maximized = isPhone.value
   }
 })
 

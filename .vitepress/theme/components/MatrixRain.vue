@@ -11,6 +11,10 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useTheme } from '../theme/index'
 
+const props = withDefaults(defineProps<{ paused?: boolean }>(), {
+  paused: false,
+})
+
 /**
  * Tunable parameters for the Matrix rain wallpaper.
  * Adjust any of these to change the look without touching the logic below.
@@ -124,7 +128,7 @@ function loop(time: number) {
 }
 
 function start() {
-  if (running || !canvasRef.value) return
+  if (running || props.paused || document.hidden || !canvasRef.value) return
   setupCanvas()
   if (reduceMotion) {
     drawFrame()
@@ -142,9 +146,17 @@ function stop() {
 }
 
 function onVisibility() {
-  if (document.hidden) stop()
+  if (document.hidden || props.paused) stop()
   else start()
 }
+
+watch(
+  () => props.paused,
+  (paused) => {
+    if (paused) stop()
+    else start()
+  },
+)
 
 onMounted(() => {
   readColors()
