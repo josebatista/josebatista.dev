@@ -10,3 +10,7 @@ links:
   - label: LinkedIn
     url: 'https://linkedin.com/in/josebatistapereira'
     text: linkedin.com/in/josebatistapereira
+  - label: YouTube
+    url: 'https://www.youtube.com/@josebatistadev'
+    text: youtube.com/@josebatistadev
+---

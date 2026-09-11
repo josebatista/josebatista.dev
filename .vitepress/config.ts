@@ -1,6 +1,11 @@
 import { defineConfig } from 'vitepress'
 import { SITE_NAME, LOCALE_EN, LOCALE_PT, PREFIX_EN, PREFIX_PT } from './theme/constants'
 
+const descriptions = {
+  en: "José Batista's portfolio and technical blog about Apache Flink, distributed systems, observability, Android, and software engineering.",
+  pt: 'Portfólio e blog técnico de José Batista sobre Apache Flink, sistemas distribuídos, observabilidade, Android e engenharia de software.',
+}
+
 const themeInitScript = `(() => {
   try {
     const saved = localStorage.getItem('josebatista-theme')
@@ -15,17 +20,19 @@ const themeInitScript = `(() => {
 
 export default defineConfig({
   title: SITE_NAME,
-  description: 'Linux OS Portfolio',
+  description: descriptions.en,
   srcDir: 'src',
   cleanUrls: true,
   locales: {
     [PREFIX_EN]: {
       label: 'English',
       lang: LOCALE_EN,
+      description: descriptions.en,
     },
     [PREFIX_PT]: {
       label: 'Português',
       lang: LOCALE_PT,
+      description: descriptions.pt,
     },
   },
   appearance: false,
