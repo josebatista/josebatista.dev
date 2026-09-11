@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue'
 import GridItem from '../components/GridItem.vue'
 import GiscusComments from '../components/GiscusComments.vue'
 import ListItem from '../components/ListItem.vue'
@@ -116,8 +116,15 @@ const { t, isPT } = useI18n()
 
 const props = defineProps<{ initialArticle?: string }>()
 
-const isGridView = ref(true)
-const selectedPost = ref<(typeof rawPosts)[number] | null>(null)
+type RawPost = (typeof rawPosts)[number]
+
+// Seed deep-linked articles during setup so VitePress includes the complete
+// article in the server-rendered HTML instead of waiting for hydration.
+const initialPost: RawPost | null = props.initialArticle
+  ? rawPosts.find((post) => post.slug === props.initialArticle) ?? null
+  : null
+const isGridView = ref(!initialPost)
+const selectedPost = ref<RawPost | null>(initialPost)
 const searchQuery = ref('')
 const activeTag = ref('')
 const gridRef = ref<HTMLElement | null>(null)
@@ -157,27 +164,40 @@ const allTags = computed(() => {
 })
 
 let mermaidLib: Promise<any> | null = null
-const mermaidSources = new Map<HTMLElement, string>()
 let themeObserver: MutationObserver | null = null
+let diagramObserver: IntersectionObserver | null = null
+let diagramScheduleId: number | null = null
+let diagramScheduleUsesIdle = false
+let diagramGeneration = 0
+let renderQueue = Promise.resolve()
+
+type IdleWindow = Window & {
+  requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number
+  cancelIdleCallback?: (handle: number) => void
+}
 
 function cssVar(name: string, fallback: string): string {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
   return v || fallback
 }
 
-async function renderDiagrams() {
-  const root = articleRef.value
-  if (!root) return
-  const nodes = Array.from(root.querySelectorAll<HTMLElement>('.mermaid'))
-  if (!nodes.length) return
+async function renderDiagrams(nodes: HTMLElement[], generation: number) {
+  if (generation !== diagramGeneration) return
   if (!mermaidLib) mermaidLib = import('mermaid').then((m) => m.default)
   const mermaid = await mermaidLib
+  if (generation !== diagramGeneration) return
+
   // Wait for web fonts so Mermaid measures label size correctly.
   // Without this, nodes are sized against a fallback font and the
   // wrapped text gets clipped (e.g. "compartilhar" -> "comparti").
   if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
     try { await document.fonts.ready } catch (e) { /* ignore */ }
   }
+
+  const root = articleRef.value
+  const connectedNodes = nodes.filter((node) => node.isConnected && root?.contains(node))
+  if (!connectedNodes.length || generation !== diagramGeneration) return
+
   mermaid.initialize({
     startOnLoad: false,
     theme: 'base',
@@ -193,26 +213,94 @@ async function renderDiagrams() {
       fontFamily: 'monospace',
     },
   })
-  mermaidSources.clear()
-  nodes.forEach((n) => mermaidSources.set(n, n.textContent || ''))
-  mermaid.run({ nodes })
+  await mermaid.run({ nodes: connectedNodes })
+}
+
+function cancelDiagramSchedule() {
+  diagramGeneration++
+  diagramObserver?.disconnect()
+  diagramObserver = null
+
+  if (diagramScheduleId == null) return
+  const idleWindow = window as IdleWindow
+  if (diagramScheduleUsesIdle) idleWindow.cancelIdleCallback?.(diagramScheduleId)
+  else window.clearTimeout(diagramScheduleId)
+  diagramScheduleId = null
+}
+
+function queueDiagramRender(nodes: HTMLElement[], generation: number) {
+  renderQueue = renderQueue
+    .then(() => renderDiagrams(nodes, generation))
+    .catch((error) => console.error('[mermaid] Failed to render diagram', error))
+}
+
+function scheduleDiagrams() {
+  cancelDiagramSchedule()
+  const root = articleRef.value
+  if (!root) return
+
+  const nodes = Array.from(root.querySelectorAll<HTMLElement>('.mermaid'))
+  if (!nodes.length) return
+  nodes.forEach((node) => {
+    if (!node.dataset.mermaidSource) node.dataset.mermaidSource = node.textContent || ''
+  })
+
+  const generation = diagramGeneration
+  const observeWhenIdle = () => {
+    diagramScheduleId = null
+    if (generation !== diagramGeneration) return
+
+    if (!('IntersectionObserver' in window)) {
+      queueDiagramRender(nodes, generation)
+      return
+    }
+
+    diagramObserver = new IntersectionObserver(
+      (entries, observer) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target as HTMLElement)
+        if (!visible.length) return
+        visible.forEach((node) => observer.unobserve(node))
+        queueDiagramRender(visible, generation)
+      },
+      { root, rootMargin: '240px 0px' },
+    )
+    nodes.forEach((node) => diagramObserver?.observe(node))
+  }
+
+  const idleWindow = window as IdleWindow
+  if (idleWindow.requestIdleCallback) {
+    diagramScheduleUsesIdle = true
+    diagramScheduleId = idleWindow.requestIdleCallback(observeWhenIdle, { timeout: 2000 })
+  } else {
+    diagramScheduleUsesIdle = false
+    diagramScheduleId = window.setTimeout(observeWhenIdle, 200)
+  }
 }
 
 function recolorDiagrams() {
   if (!selectedPost.value) return
-  const nodes = Array.from(mermaidSources.keys())
-  if (!nodes.length) return
-  nodes.forEach((node) => {
-    const src = mermaidSources.get(node)
-    if (src == null) return
-    const fresh = document.createElement('div')
-    fresh.className = 'mermaid'
-    fresh.textContent = src
-    node.replaceWith(fresh)
-    mermaidSources.set(fresh, src)
-    mermaidSources.delete(node)
-  })
-  renderDiagrams()
+  const generation = diagramGeneration
+
+  // Mermaid sets data-processed before all of its DOM work has necessarily
+  // finished. Keep both the reset and the new render in the same queue so a
+  // theme change cannot remove an SVG while the previous run still uses it.
+  renderQueue = renderQueue
+    .then(async () => {
+      if (generation !== diagramGeneration || !selectedPost.value) return
+      const renderedNodes = Array.from(
+        articleRef.value?.querySelectorAll<HTMLElement>('.mermaid[data-processed="true"]') ?? [],
+      )
+      renderedNodes.forEach((node) => {
+        const source = node.dataset.mermaidSource
+        if (!source) return
+        node.removeAttribute('data-processed')
+        node.textContent = source
+      })
+      if (renderedNodes.length) await renderDiagrams(renderedNodes, generation)
+    })
+    .catch((error) => console.error('[mermaid] Failed to recolor diagram', error))
 }
 
 function setupThemeObserver() {
@@ -267,20 +355,26 @@ watch(
 watch(
   [() => activePost.value?.html, isGridView],
   async () => {
-    if (isGridView.value) return
+    if (isGridView.value) {
+      cancelDiagramSchedule()
+      return
+    }
     await nextTick()
-    renderDiagrams()
+    scheduleDiagrams()
   }
 )
 
-onMounted(() => {
+onMounted(async () => {
   setupThemeObserver()
-  if (props.initialArticle) {
-    const post = rawPosts.find((p) => p.slug === props.initialArticle)
-    if (post) {
-      selectedPost.value = post
-      isGridView.value = false
-    }
+  if (!isGridView.value) {
+    await nextTick()
+    scheduleDiagrams()
   }
+})
+
+onBeforeUnmount(() => {
+  cancelDiagramSchedule()
+  themeObserver?.disconnect()
+  themeObserver = null
 })
 </script>

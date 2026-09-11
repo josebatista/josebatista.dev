@@ -28,6 +28,7 @@ export default {
     search: 'Buscar posts...',
     back: 'Voltar aos posts',
     comments: 'Comentários',
+    loadComments: 'Carregar comentários',
     crumb: {
       document: 'documentos',
       blog: 'blog',

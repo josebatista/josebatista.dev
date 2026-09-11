@@ -28,6 +28,7 @@ export default {
     search: 'Search posts...',
     back: 'Back to posts',
     comments: 'Comments',
+    loadComments: 'Load comments',
     crumb: {
       document: 'document',
       blog: 'blog',

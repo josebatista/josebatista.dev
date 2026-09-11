@@ -1,19 +1,27 @@
 <template>
-  <section class="giscus-comments" :aria-label="t('blog.comments')">
+  <section ref="sectionRef" class="giscus-comments" :aria-label="t('blog.comments')">
     <h2 class="giscus-heading">{{ t('blog.comments') }}</h2>
-    <div ref="containerRef" class="giscus" />
+    <div v-if="!loaded" class="giscus-placeholder">
+      <button type="button" class="ui-button giscus-load" @click="loadComments">
+        {{ t('blog.loadComments') }}
+      </button>
+    </div>
+    <div v-show="loaded" ref="containerRef" class="giscus" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { GISCUS, LOCALE_PT } from '../constants'
 import { useI18n } from '../i18n/index'
 import { useTheme } from '../theme/index'
 
 const { locale, t } = useI18n()
 const { theme } = useTheme()
+const sectionRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
+const loaded = ref(false)
+let observer: IntersectionObserver | null = null
 
 function giscusTheme() {
   return theme.value === 'dark' ? 'dark_dimmed' : 'light'
@@ -23,7 +31,13 @@ function giscusLanguage() {
   return locale.value === LOCALE_PT ? 'pt' : 'en'
 }
 
-function render() {
+async function loadComments() {
+  if (loaded.value) return
+  loaded.value = true
+  observer?.disconnect()
+  observer = null
+  await nextTick()
+
   const container = containerRef.value
   if (!container) return
 
@@ -63,6 +77,25 @@ function syncConfig() {
   )
 }
 
-onMounted(render)
+onMounted(() => {
+  const section = sectionRef.value
+  if (!section || !('IntersectionObserver' in window)) {
+    void loadComments()
+    return
+  }
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) void loadComments()
+    },
+    {
+      root: section.closest('.blog-article'),
+      rootMargin: '400px 0px',
+    },
+  )
+  observer.observe(section)
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 watch([theme, locale], syncConfig)
 </script>
