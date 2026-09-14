@@ -22,6 +22,7 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Blog Posts — English
 
+- [Concurrency, parallelism, and distribution are not the same thing](https://josebatista.dev/en/posts/flink101-05): Three ways of organizing work that may look alike at first glance but answer different questions.
 - [Before scaling, what exactly are we trying to scale?](https://josebatista.dev/en/posts/flink101-04): Workload, processes, and threads: three simple ideas for starting to think about distributed processing.
 - [What happens to an alert when the machine calculating it goes down?](https://josebatista.dev/en/posts/flink101-03): An example using streaming logs to understand work distribution, checkpoints, and out-of-order events.
 - [A five-minute error alert isn't just a counter](https://josebatista.dev/en/posts/flink101-02): Tracking a service's errors in real time helps explain state and windows without starting with an API.
@@ -30,6 +31,7 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Posts do blog — Português
 
+- [Concorrência, paralelismo e distribuição não são a mesma coisa](https://josebatista.dev/pt/posts/flink101-05): Três formas de organizar trabalho que parecem iguais à primeira vista, mas respondem perguntas diferentes.
 - [Antes de escalar, o que exatamente estamos tentando escalar?](https://josebatista.dev/pt/posts/flink101-04): Workload, processos e threads: três ideias simples para começar a pensar em processamento distribuído.
 - [O que acontece com um alerta quando a máquina que o calcula cai?](https://josebatista.dev/pt/posts/flink101-03): Um exemplo de logs em streaming para entender divisão de trabalho, checkpoints e eventos fora de ordem.
 - [Um alerta de erros em cinco minutos não é só um contador](https://josebatista.dev/pt/posts/flink101-02): Acompanhar erros de um serviço em tempo real ajuda a entender state e janelas sem começar por uma API.
