@@ -2,8 +2,8 @@
 title: Contact
 links:
   - label: Email
-    url: mailto:me@josebatista.dev
-    text: me@josebatista.dev
+    url: mailto:hello@josebatista.dev
+    text: hello@josebatista.dev
   - label: GitHub
     url: 'https://github.com/josebatista'
     text: github.com/josebatista
