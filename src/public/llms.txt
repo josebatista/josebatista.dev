@@ -22,6 +22,7 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Blog Posts — English
 
+- [A Local Flink Cluster with Docker Compose](https://josebatista.dev/en/posts/flink101-10): How JobManager, TaskManager, volumes, and the Web UI form the local environment before the first Job.
 - [From coordinator and worker to Flink's names](https://josebatista.dev/en/posts/flink101-09): How the generic roles of distributed execution appear as Job, JobManager, and TaskManager in Flink.
 - [In a distributed system, someone needs to coordinate the work](https://josebatista.dev/en/posts/flink101-08): Coordinator and workers: the generic roles behind distributed execution.
 - [When a log leaves a process, it has to become bytes](https://josebatista.dev/en/posts/flink101-07): Serialization is the bridge between in-memory objects and communication in distributed systems.
@@ -35,6 +36,7 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Posts do blog — Português
 
+- [Um cluster Flink local com Docker Compose](https://josebatista.dev/pt/posts/flink101-10): Como JobManager, TaskManager, volumes e Web UI formam o ambiente local antes do primeiro Job.
 - [Do coordenador e worker aos nomes do Flink](https://josebatista.dev/pt/posts/flink101-09): Como os papéis genéricos de uma execução distribuída aparecem como Job, JobManager e TaskManager no Flink.
 - [Em um sistema distribuído, alguém precisa coordenar o trabalho](https://josebatista.dev/pt/posts/flink101-08): Coordenador e workers: os papéis genéricos por trás de uma execução distribuída.
 - [Quando um log sai de um processo, ele precisa virar bytes](https://josebatista.dev/pt/posts/flink101-07): Serialização é a ponte entre objetos em memória e comunicação em sistemas distribuídos.
