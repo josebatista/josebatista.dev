@@ -22,6 +22,7 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Blog Posts — English
 
+- [My first Flink dataflow: from Source to execute](https://josebatista.dev/en/posts/flink101-12): How an Application declares transformations and submits the computation as a Job.
 - [Before the First Job: Preparing a Flink Application in Java](https://josebatista.dev/en/posts/flink101-11): Maven project, dependencies, main class, JAR, and cluster before the first dataflow.
 - [A Local Flink Cluster with Docker Compose](https://josebatista.dev/en/posts/flink101-10): How JobManager, TaskManager, volumes, and the Web UI form the local environment before the first Job.
 - [From coordinator and worker to Flink's names](https://josebatista.dev/en/posts/flink101-09): How the generic roles of distributed execution appear as Job, JobManager, and TaskManager in Flink.
@@ -37,6 +38,7 @@ josebatista.dev is a developer portfolio styled as a Linux operating-system desk
 
 ## Posts do blog — Português
 
+- [Meu primeiro dataflow no Flink: da Source ao execute](https://josebatista.dev/pt/posts/flink101-12): Como uma Application declara transformations e submete a computação como um Job.
 - [Antes do primeiro Job: preparando uma aplicação Flink em Java](https://josebatista.dev/pt/posts/flink101-11): Projeto Maven, dependências, classe main, JAR e cluster antes do primeiro dataflow.
 - [Um cluster Flink local com Docker Compose](https://josebatista.dev/pt/posts/flink101-10): Como JobManager, TaskManager, volumes e Web UI formam o ambiente local antes do primeiro Job.
 - [Do coordenador e worker aos nomes do Flink](https://josebatista.dev/pt/posts/flink101-09): Como os papéis genéricos de uma execução distribuída aparecem como Job, JobManager e TaskManager no Flink.
