@@ -1,5 +1,11 @@
 ---
 layout: false
+head:
+  - - meta
+    - http-equiv: refresh
+      content: "0; url=/en/"
 ---
 
-<RootRedirect />
+<main>
+  <p>Redirecting to <a href="/en/">English</a>.</p>
+</main>

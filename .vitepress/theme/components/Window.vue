@@ -40,15 +40,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, useId } from 'vue'
-import AboutWindow from '../content/AboutWindow.vue'
-import BlogWindow from '../content/BlogWindow.vue'
-import ProjectsWindow from '../content/ProjectsWindow.vue'
-import ContactWindow from '../content/ContactWindow.vue'
-import NotFoundWindow from '../content/NotFoundWindow.vue'
+import { ref, computed, onMounted, onUnmounted, useId, defineAsyncComponent } from 'vue'
 import { useI18n } from '../i18n/index'
 import { useIsMobile } from '../composables/useIsMobile'
 import { WINDOW_TYPES } from '../constants'
+
+const AboutWindow = defineAsyncComponent(() => import('../content/AboutWindow.vue'))
+const BlogWindow = defineAsyncComponent(() => import('../content/BlogWindow.vue'))
+const ProjectsWindow = defineAsyncComponent(() => import('../content/ProjectsWindow.vue'))
+const ContactWindow = defineAsyncComponent(() => import('../content/ContactWindow.vue'))
+const NotFoundWindow = defineAsyncComponent(() => import('../content/NotFoundWindow.vue'))
 
 const { t } = useI18n()
 const { isPhone } = useIsMobile()

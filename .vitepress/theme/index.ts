@@ -2,7 +2,6 @@ import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import DesktopHome from './layouts/DesktopHome.vue'
 import PostLayout from './layouts/PostLayout.vue'
-import RootRedirect from './components/RootRedirect.vue'
 import './style.css'
 
 export default {
@@ -11,6 +10,5 @@ export default {
   enhanceApp({ app }) {
     app.component('DesktopHome', DesktopHome)
     app.component('PostLayout', PostLayout)
-    app.component('RootRedirect', RootRedirect)
   }
 }

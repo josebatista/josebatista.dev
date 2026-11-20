@@ -61,6 +61,41 @@ export default defineConfig({
   },
   sitemap: {
     hostname: `https://${SITE_NAME}`,
+    transformItems(items) {
+      return items.filter((item) => {
+        const url = item.url.replace(/^\/+|\/+$/g, '')
+        return url !== '' && url !== 'index'
+      })
+    },
+  },
+  transformHead({ page }) {
+    if (!page || page === 'index.md') return
+
+    const normalizedPage = page.replace(/^\/+/, '').replace(/\.md$/, '')
+    const isEnglish = normalizedPage.startsWith('en/')
+    const isPortuguese = normalizedPage.startsWith('pt/')
+    if (!isEnglish && !isPortuguese) return
+
+    const suffix = normalizedPage.replace(/^(en|pt)\//, '')
+    const routeSuffix = suffix === 'index' ? '' : suffix
+    const canonicalPath = `/${isEnglish ? PREFIX_EN : PREFIX_PT}/${routeSuffix}`
+      .replace(/\/+/g, '/')
+      .replace(/\/$/, routeSuffix ? '' : '/')
+    const canonical = `https://${SITE_NAME}${canonicalPath}`
+    const enPath = `/${PREFIX_EN}/${routeSuffix}`
+      .replace(/\/+/g, '/')
+      .replace(/\/$/, routeSuffix ? '' : '/')
+    const ptPath = `/${PREFIX_PT}/${routeSuffix}`
+      .replace(/\/+/g, '/')
+      .replace(/\/$/, routeSuffix ? '' : '/')
+
+    return [
+      ['link', { rel: 'canonical', href: canonical }],
+      ['link', { rel: 'alternate', hreflang: 'en-US', href: `https://${SITE_NAME}${enPath}` }],
+      ['link', { rel: 'alternate', hreflang: 'pt-BR', href: `https://${SITE_NAME}${ptPath}` }],
+      ['link', { rel: 'alternate', hreflang: 'x-default', href: `https://${SITE_NAME}${enPath}` }],
+      ['meta', { property: 'og:url', content: canonical }],
+    ]
   },
   head: [
     ['script', {}, themeInitScript],

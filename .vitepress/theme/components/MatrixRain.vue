@@ -61,6 +61,7 @@ let width = 0
 let height = 0
 let lastTime = 0
 let resizeObserver: ResizeObserver | null = null
+let idleId: number | null = null
 
 const chars =
   'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$+-*/=#%@&'.split(
@@ -164,7 +165,6 @@ onMounted(() => {
     readColors()
     if (reduceMotion && !running && ctx) drawFrame()
   })
-  start()
   document.addEventListener('visibilitychange', onVisibility)
   const parent = canvasRef.value?.parentElement
   if (parent && 'ResizeObserver' in window) {
@@ -176,10 +176,28 @@ onMounted(() => {
     })
     resizeObserver.observe(parent)
   }
+
+  const scheduleIdle = (
+    typeof window.requestIdleCallback === 'function'
+      ? (callback: IdleRequestCallback) => window.requestIdleCallback(callback, { timeout: 1200 })
+      : (callback: IdleRequestCallback) => window.setTimeout(() => callback({
+          didTimeout: true,
+          timeRemaining: () => 0,
+        }), 250)
+  )
+
+  idleId = scheduleIdle(() => start())
 })
 
 onBeforeUnmount(() => {
   stop()
+  if (idleId !== null) {
+    if (typeof window.cancelIdleCallback === 'function') {
+      window.cancelIdleCallback(idleId)
+    } else {
+      window.clearTimeout(idleId)
+    }
+  }
   document.removeEventListener('visibilitychange', onVisibility)
   resizeObserver?.disconnect()
 })
